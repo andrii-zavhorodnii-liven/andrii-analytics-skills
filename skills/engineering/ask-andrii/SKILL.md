@@ -75,6 +75,7 @@ Off the main flow entirely.
   - **`/research-web`** — **which approach** to take. Model family, orchestration option, prior art. Ends in one recommendation for our constraints, not a survey.
 - **`/resolving-merge-conflicts`** — resolve an in-progress git merge or rebase conflict from primary sources (commits, PRs, original issues) rather than guessing. Model-invoked when a merge is already underway; reach for it by name when you're staring at conflict markers.
 - **`/cloud-run-to-repo`** — adopt a Cloud Run service that was deployed ad-hoc (console, lost working copy) into a proper git repo: recover the exact deployed source, set up uv, and write a `deploy.sh` that mirrors every live runtime flag. It never redeploys — that stays your call.
+- **`/present-analysis`** — the delivery step when an analysis is *finished*: turn its scripts, result tables, and charts into a layered stakeholder report — takeaways anchored on the stakeholder question, every takeaway backed by a chart, recommendations in plain business language. It communicates existing findings; it never computes new ones — the analysis itself comes from the main flow or `/research-data`/`/prototype`.
 - **`/teach`** — learn a concept over multiple sessions, using the current directory as a stateful workspace.
 - **`/writing-great-skills`** — reference for writing and editing skills well.
 

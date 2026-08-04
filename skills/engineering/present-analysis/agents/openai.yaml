@@ -1,0 +1,5 @@
+interface:
+  display_name: "Present Analysis"
+  short_description: "Turn a finished analysis into a stakeholder report"
+policy:
+  allow_implicit_invocation: false
