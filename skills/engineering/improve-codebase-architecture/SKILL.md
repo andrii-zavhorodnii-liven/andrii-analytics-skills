@@ -32,6 +32,15 @@ Then use the Agent tool with `subagent_type=Explore` to walk the codebase. Don't
 - Where do tightly-coupled modules leak across their seams?
 - Which parts of the codebase are untested, or hard to test through their current interface?
 
+In a data platform, the same friction shows up in shapes worth looking for by name:
+
+- **Transformation tangled with I/O** — the shaping logic can only be reached by running a job that reads and writes. The deepening is a pure transformation module with the reads and writes at the edges.
+- **A shallow Dataform model** — a `.sqlx` that selects from one `ref()` and renames three columns. Apply the deletion test: would folding it into its consumer concentrate complexity, or just move it?
+- **A model every consumer reaches past** — downstream models that skip a mart and read staging directly are telling you the mart's interface is wrong.
+- **The same business rule in several places** — one metric's definition restated in three models and a dashboard. Four copies is four answers.
+- **Repeated ingestion boilerplate** — pagination, retries, watermark handling written afresh per source. Two adapters means a real seam; one means a hypothetical one.
+- **An unstated grain** — a table whose grain isn't enforced by an assertion. Not a refactor exactly, but the cheapest architectural fix on this list.
+
 Apply the **deletion test** to anything you suspect is shallow: would deleting it concentrate complexity, or just move it? A "yes, concentrates" is the signal you want.
 
 ### 2. Present candidates as an HTML report
