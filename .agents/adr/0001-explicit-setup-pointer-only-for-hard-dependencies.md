@@ -1,5 +1,7 @@
 # Explicit `/setup-analytics-skills` pointer only for hard dependencies
 
+> **Superseded** (commit `131edd6`): `/setup-analytics-skills` was removed in favor of a fixed convention — GitHub Issues via `gh` when the repo has a git remote, local markdown under `.scratch/` when it doesn't, triage labels equal to the canonical role names verbatim. There is no per-repo config to point at, so the hard/soft split below no longer applies. Kept for the history of why setup pointers existed.
+
 Engineering skills depend on per-repo config (issue tracker, triage label vocabulary, domain doc layout) seeded by `/setup-analytics-skills`. Some skills cannot meaningfully function without that config — they have to publish to a specific issue tracker or apply a specific label string. Others only use it to sharpen output (vocabulary, ADR awareness) and degrade gracefully without it.
 
 We split these into **hard-dependency** and **soft-dependency** skills:

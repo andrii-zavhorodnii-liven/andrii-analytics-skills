@@ -53,8 +53,10 @@ A list of implementation decisions that were made. This can include:
 - Output schema, **grain**, partitioning and clustering — state the grain explicitly; it's the single most common thing a spec leaves implicit and an implementation gets wrong
 - Source contracts: which fields are relied on, what happens when one goes missing or null
 - Backfill and idempotency: whether a re-run replaces, appends, or merges, and what a replay of a past partition does
+- Done signal for a scheduled or backfilled load: how a run knows a partition is complete — an `is_complete` column, a row-count threshold, date presence
 - Freshness and scheduling expectations
-- For a model: the target definition, the train/test split policy, and which features are available at prediction time
+- Cost ceiling: the maximum BigQuery scan or API-call volume a run may incur before stopping to confirm
+- For a model: the target definition (units and time horizon), the training population (inclusion/exclusion criteria), the train/test split policy (time-based when the target has a time component — a random split on time-correlated data is leakage), which features are knowable at prediction time, the baseline to beat (never train without one — a 0.87 AUC means nothing without knowing what last-value or a class-prior scores), and the primary metric, chosen before evaluation, not picked to flatter the numbers
 
 Do NOT include specific file paths or code snippets. They may end up being outdated very quickly.
 
