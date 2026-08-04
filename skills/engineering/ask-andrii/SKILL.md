@@ -73,9 +73,10 @@ Off the main flow entirely.
   - **`/research-docs`** — a fact about a **tool**. Does Dataform support this? What's the quota? What does the SDK actually do? Answered from primary sources, pinned to a version.
   - **`/research-data`** — a fact about **our data**. What's the grain? How null is this column? Do these two tables join? Answered in numbers, with the queries attached. Reach for this one first when a plan rests on an assumption nobody has checked — it's the cheapest way to find out you were about to build the wrong thing.
   - **`/research-web`** — **which approach** to take. Model family, orchestration option, prior art. Ends in one recommendation for our constraints, not a survey.
+- **`/resolving-merge-conflicts`** — resolve an in-progress git merge or rebase conflict from primary sources (commits, PRs, original issues) rather than guessing. Model-invoked when a merge is already underway; reach for it by name when you're staring at conflict markers.
 - **`/teach`** — learn a concept over multiple sessions, using the current directory as a stateful workspace.
 - **`/writing-great-skills`** — reference for writing and editing skills well.
 
-## Precondition
+## Conventions underneath
 
-**`/setup-analytics-skills`** — run once per repo, before your first engineering flow, to configure the issue tracker, triage labels, and doc layout the other skills assume. It defaults to **GitHub Issues** and should cost you one word; local markdown under `.scratch/` is there for repos with no remote.
+No per-repo setup step. The skills that touch an issue tracker all follow one convention: **GitHub Issues** via the `gh` CLI when the repo has a git remote, local markdown under `.scratch/` when it doesn't, and triage labels equal to the canonical role names verbatim.

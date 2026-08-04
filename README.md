@@ -35,13 +35,13 @@ Each entry is a symlink into the clone, so `git pull` keeps installed skills cur
 
 </details>
 
-### Then run `/setup-analytics-skills`
+### No per-repo setup
 
-Once per repo. It configures:
+The skills follow conventions instead of per-repo config:
 
-- The **issue tracker** — GitHub Issues by default (one word to confirm); local markdown under `.scratch/` for repos with no remote
-- The **triage labels** `/triage` applies
-- Where **`CONTEXT.md` and ADRs** live
+- The **issue tracker** is GitHub Issues via the `gh` CLI (repo inferred from `git remote`); repos with no remote fall back to local markdown under `.scratch/`
+- The **triage labels** are the five canonical role names verbatim: `needs-triage`, `needs-info`, `ready-for-agent`, `ready-for-human`, `wontfix`
+- **`CONTEXT.md` and `docs/adr/`** live at the repo root, created lazily by `/domain-modeling` when terms or decisions actually get resolved
 
 ## Why these skills exist
 
@@ -130,7 +130,6 @@ Daily data, analytics and platform work.
 **User-invoked**
 
 - **[ask-andrii](./skills/engineering/ask-andrii/SKILL.md)** — Ask which skill or flow fits your situation. A router over the user-invoked skills in this repo.
-- **[setup-analytics-skills](./skills/engineering/setup-analytics-skills/SKILL.md)** — Configure this repo for the engineering skills (issue tracker, triage labels, domain doc layout). Run once per repo before using the others.
 - **[grill-with-docs](./skills/engineering/grill-with-docs/SKILL.md)** — Grilling session that also builds your project's domain model, sharpening terminology and updating `CONTEXT.md` and ADRs inline.
 - **[triage](./skills/engineering/triage/SKILL.md)** — Move issues through a state machine of triage roles, ending in an agent-ready brief.
 - **[to-spec](./skills/engineering/to-spec/SKILL.md)** — Turn the current conversation into a spec and publish it to the issue tracker. No interview — just synthesis of what you've already discussed.

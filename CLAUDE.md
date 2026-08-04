@@ -26,7 +26,7 @@ Do not introduce frontend examples (React, CSS, browsers, component trees) or No
 
 ## Issue tracker
 
-These skills track work in **GitHub Issues** via the `gh` CLI. That's the default and the recommended path; `docs/agents/issue-tracker.md` in a consumer repo records the choice, and a local-markdown convention under `.scratch/` is the fallback for repos with no remote. See [setup-analytics-skills](./skills/engineering/setup-analytics-skills/SKILL.md).
+These skills track work in **GitHub Issues** via the `gh` CLI, by convention — no per-repo config file or setup step. A repo with no git remote falls back to local markdown under `.scratch/`. Triage labels are the five canonical role names verbatim. Skills that touch the tracker state the convention inline; `/wayfinder` keeps the heavier per-tracker operations in [trackers.md](./skills/engineering/wayfinder/trackers.md).
 
 ## Router
 

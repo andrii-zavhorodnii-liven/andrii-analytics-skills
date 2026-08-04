@@ -1,6 +1,6 @@
 # Andrii Analytics Skills
 
-A collection of agent skills (slash commands and behaviors) loaded by Claude Code, aimed at data science, data engineering and analytics work. Skills are organized into buckets and consumed by per-repo configuration emitted by `/setup-analytics-skills`.
+A collection of agent skills (slash commands and behaviors) loaded by Claude Code, aimed at data science, data engineering and analytics work. Skills are organized into buckets and rely on repo-wide conventions (GitHub Issues as the tracker, canonical triage label names) rather than per-repo configuration.
 
 ## Language
 
@@ -16,7 +16,7 @@ _Avoid_: ticket (use only when quoting external systems that call them tickets, 
 A `wayfinder` unit — a child **Issue** of a `wayfinder:map` holding a *question* whose resolution is a decision, not a slice of a build to execute. The **decision** qualifier is what keeps it distinct from an implementation ticket; `wayfinder` introduces the term, then uses "ticket".
 
 **Triage role**:
-A canonical state-machine label applied to an **Issue** during triage (e.g. `needs-triage`, `ready-for-afk`). Each role maps to a real label string in the **Issue tracker** via `docs/agents/triage-labels.md`.
+A canonical state-machine label applied to an **Issue** during triage (`needs-triage`, `needs-info`, `ready-for-agent`, `ready-for-human`, `wontfix`). The label string in the **Issue tracker** is the role name verbatim.
 
 **Target stack**:
 The stack every skill's examples are drawn from: BigQuery with transformations in Dataform, Python pipelines managed with `uv` and deployed to Cloud Run, and modelling on Vertex AI. A skill introducing an example outside it (a frontend framework, a Node toolchain) has drifted.
