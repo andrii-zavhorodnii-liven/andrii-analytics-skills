@@ -21,47 +21,46 @@ One file per **concept**, not per issue. Multiple issues requesting the same thi
 The file should be written in a relaxed, readable style — more like a short design document than a database entry. Use paragraphs, code samples, and examples to make the reasoning clear and useful to someone encountering it for the first time.
 
 ```markdown
-# Dark Mode
+# Real-Time Ingestion
 
-This project does not support dark mode or user-facing theming.
+This platform ingests in batch. Streaming and sub-hourly freshness are
+out of scope.
 
 ## Why this is out of scope
 
-The rendering pipeline assumes a single color palette defined in
-`ThemeConfig`. Supporting multiple themes would require:
+Every mart is partitioned on event date and rebuilt per partition, and
+the assertions that guarantee grain run over a whole partition at a time.
+Supporting streaming would require:
 
-- A theme context provider wrapping the entire component tree
-- Per-component theme-aware style resolution
-- A persistence layer for user theme preferences
+- Rows arriving into partitions that are already sealed and asserted
+- A second, incremental path alongside every full-rebuild model
+- Deduplication moving from staging into the read path
 
-This is a significant architectural change that doesn't align with the
-project's focus on content authoring. Theming is a concern for downstream
-consumers who embed or redistribute the output.
+The freshness we actually need is hourly at the tightest, and the batch
+graph already delivers that. Anyone needing sub-minute data should read
+the source system directly rather than the warehouse.
 
-```ts
-// The current ThemeConfig interface is not designed for runtime switching:
-interface ThemeConfig {
-  colors: ColorPalette; // single palette, resolved at build time
-  fonts: FontStack;
-}
+```sql
+-- Every mart assumes a sealed partition; a late row silently breaks the grain assertion:
+config { type: "incremental", uniqueKey: ["order_id"], assertions: { uniqueKey: ["order_id"] } }
 ```
 
 ## Prior requests
 
-- #42 — "Add dark mode support"
-- #87 — "Night theme for accessibility"
-- #134 — "Dark theme option"
+- #42 — "Stream orders into BigQuery"
+- #87 — "Can we get minute-level freshness on the events table?"
+- #134 — "Pub/Sub ingestion for the orders feed"
 ```
 
 ### Naming the file
 
-Use a short, descriptive kebab-case name for the concept: `dark-mode.md`, `plugin-system.md`, `graphql-api.md`. The name should be recognizable enough that someone browsing the directory understands what was rejected without opening the file.
+Use a short, descriptive kebab-case name for the concept: `real-time-ingestion.md`, `self-serve-metric-builder.md`, `pii-in-marts.md`. The name should be recognizable enough that someone browsing the directory understands what was rejected without opening the file.
 
 ### Writing the reason
 
 The reason should be substantive — not "we don't want this" but why. Good reasons reference:
 
-- Project scope or philosophy ("This project focuses on X; theming is a downstream concern")
+- Project scope or philosophy ("This platform serves batch analytics; sub-minute freshness is a source-system concern")
 - Technical constraints ("Supporting this would require Y, which conflicts with our Z architecture")
 - Strategic decisions ("We chose to use A instead of B because...")
 

@@ -1,0 +1,3 @@
+interface:
+  display_name: "Research Docs"
+  short_description: "Answer a tool/API question from primary sources"

@@ -11,16 +11,20 @@
 
 **Order**:
 {A one or two sentence description of the term}
+_Grain_: one row per order
 _Avoid_: Purchase, transaction
 
-**Invoice**:
-A request for payment sent to a customer after delivery.
-_Avoid_: Bill, payment request
+**Order Line**:
+A single product-and-quantity within an **Order**. The finest grain we hold order data at.
+_Grain_: one row per (order, product)
+_Avoid_: Line item, order item
 
-**Customer**:
-A person or organization that places orders.
-_Avoid_: Client, buyer, account
+**Active Customer**:
+A **Customer** with at least one **Order** in the trailing 90 days, measured on `ordered_at` — not on ingestion time.
+_Avoid_: Live customer, engaged customer
 ```
+
+For terms that name something the warehouse holds, add a `_Grain_` line: what one row is. It's part of what the word means, and it's the fact most often assumed differently by two people using the same term. For a metric term, the definition must state its **window** and the **timestamp** it's measured on — a metric word without those isn't defined yet.
 
 ## Rules
 
@@ -40,15 +44,15 @@ _Avoid_: Client, buyer, account
 
 ## Contexts
 
-- [Ordering](./src/ordering/CONTEXT.md) — receives and tracks customer orders
-- [Billing](./src/billing/CONTEXT.md) — generates invoices and processes payments
-- [Fulfillment](./src/fulfillment/CONTEXT.md) — manages warehouse picking and shipping
+- [Ingestion](./src/ingestion/CONTEXT.md) — pulls source systems into raw and staging tables
+- [Marts](./src/marts/CONTEXT.md) — models staging data into the tables analysts query
+- [Modelling](./src/modelling/CONTEXT.md) — builds feature sets and trains predictive models
 
 ## Relationships
 
-- **Ordering → Fulfillment**: Ordering emits `OrderPlaced` events; Fulfillment consumes them to start picking
-- **Fulfillment → Billing**: Fulfillment emits `ShipmentDispatched` events; Billing consumes them to generate invoices
-- **Ordering ↔ Billing**: Shared types for `CustomerId` and `Money`
+- **Ingestion → Marts**: Ingestion owns `staging.*`; Marts may only read from staging, never from raw
+- **Marts → Modelling**: Modelling builds features from mart tables, never from staging — so a feature can't outrun a definition change
+- **Ingestion ↔ Marts**: Shared definition of `customer_id` and the ingestion watermark convention
 ```
 
 The skill infers which structure applies:

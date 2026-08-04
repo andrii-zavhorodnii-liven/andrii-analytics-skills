@@ -10,7 +10,7 @@ Two-axis review of the diff between `HEAD` and a fixed point the user supplies:
 
 Both axes run as **parallel sub-agents** so they don't pollute each other's context, then this skill aggregates their findings.
 
-The issue tracker should have been provided to you — run `/setup-matt-pocock-skills` if `docs/agents/issue-tracker.md` is missing.
+Issue tracker convention: **GitHub Issues** via the `gh` CLI when the repo has a git remote; local markdown under `.scratch/<feature>/issues/` when it doesn't.
 
 ## Process
 
@@ -26,7 +26,7 @@ Before going further, confirm the fixed point resolves (`git rev-parse <fixed-po
 
 Look for the originating spec, in this order:
 
-1. Issue references in the commit messages (`#123`, `Closes #45`, GitLab `!67`, etc.) — fetch via the workflow in `docs/agents/issue-tracker.md`.
+1. Issue references in the commit messages (`#123`, `Closes #45`, etc.) — fetch with `gh issue view <n> --comments` (or read the `.scratch/` file on a remoteless repo).
 2. A path the user passed as an argument.
 3. A PRD/spec file under `docs/`, `specs/`, or `.scratch/` matching the branch name or feature.
 4. If nothing is found, ask the user where the spec is. If they say there isn't one, the **Spec** sub-agent will skip and report "no spec available".
@@ -55,6 +55,20 @@ Each smell reads *what it is* → *how to fix*; match it against the diff:
 - **Middle Man** — a class or function that mostly just delegates onward. → cut it, call the real target direct.
 - **Refused Bequest** — a subclass or implementer that ignores or overrides most of what it inherits. → drop the inheritance, use composition.
 
+On top of the smell baseline, the Standards axis carries a **data baseline** — the failure modes that are cheap to introduce here and expensive to discover in production. Same rules bind it: a documented repo standard overrides, and each item is a judgement call.
+
+- **Unbounded scan** — a query over a partitioned table with no partition filter, or a `SELECT *` on a wide table. → add the filter; select the columns you need.
+- **Unenforced grain** — a new or changed output table whose grain isn't guaranteed by a `uniqueKey` or an assertion. → add the assertion; a grain in a comment isn't a grain.
+- **Silent full refresh** — an incremental model changed in a way that quietly forces or breaks a full rebuild. → make the intent explicit and say what it costs.
+- **Non-idempotent write** — a load path where re-running a partition duplicates or loses rows. → make the write replace or merge on a key.
+- **Hidden clock dependency** — `CURRENT_DATE()` / `datetime.now()` inside logic, so the same input produces different output tomorrow. → pass the date in as a parameter.
+- **Leakage** — a feature or label computed from information not available at prediction time. → recompute it as of the prediction timestamp.
+- **Hardcoded identifiers** — a project, dataset, or bucket name inline instead of resolved from config or `workflow_settings.yaml`. → move it to config.
+- **Fan-out join** — a join whose other side isn't unique on the join key, silently duplicating rows before an aggregate. → verify or enforce uniqueness on that side; `DISTINCT` after the fact masks it, it doesn't fix it.
+- **Silent population filter** — a `WHERE` clause or join condition that quietly drops a segment the metric claims to cover (an inner join standing in for a left join, a status filter excluding edge states). → make the exclusion explicit and intended, or widen the join.
+- **NULL-blind aggregate** — a ratio or aggregate whose numerator and denominator treat NULLs differently, or where `COUNT(col)` vs `COUNT(*)` changes the answer. → decide what a NULL means here and encode it.
+- **Temporal boundary error** — an off-by-one date range, an incomplete trailing period presented as complete, or a window mixing event time with ingestion time. → pin the boundary semantics and exclude or label the partial edge.
+
 ### 4. Spawn both sub-agents in parallel
 
 Send a single message with two `Agent` tool calls. Use the `general-purpose` subagent for both.
@@ -62,14 +76,14 @@ Send a single message with two `Agent` tool calls. Use the `general-purpose` sub
 **Standards sub-agent prompt** — include:
 
 - The full diff command and commit list.
-- The list of standards-source files you found in step 3, **plus the smell baseline from step 3** pasted in full — the sub-agent has no other access to it.
-- The brief: "Report — per file/hunk where relevant — (a) every place the diff violates a documented standard: cite the standard (file + the rule); and (b) any baseline smell you spot: name it and quote the hunk. Distinguish hard violations from judgement calls — documented-standard breaches can be hard, but baseline smells are always judgement calls, and a documented repo standard overrides the baseline. Skip anything tooling enforces. Under 400 words."
+- The list of standards-source files you found in step 3, **plus both baselines from step 3 — the smell baseline and the data baseline** — pasted in full; the sub-agent has no other access to them.
+- The brief: "Report — per file/hunk where relevant — (a) every place the diff violates a documented standard: cite the standard (file + the rule); and (b) any smell or data-baseline issue you spot: name it and quote the hunk. Distinguish hard violations from judgement calls — documented-standard breaches can be hard, but baseline smells are always judgement calls, and a documented repo standard overrides the baseline. Skip anything tooling enforces. Under 400 words."
 
 **Spec sub-agent prompt** — include:
 
 - The diff command and commit list.
 - The path or fetched contents of the spec.
-- The brief: "Report: (a) requirements the spec asked for that are missing or partial; (b) behaviour in the diff that wasn't asked for (scope creep); (c) requirements that look implemented but where the implementation looks wrong. Quote the spec line for each finding. Under 400 words."
+- The brief: "Report: (a) requirements the spec asked for that are missing or partial; (b) behaviour in the diff that wasn't asked for (scope creep); (c) requirements that look implemented but where the implementation looks wrong; (d) where the diff defines or changes a metric, analysis query, or stakeholder-facing output, whether it answers the question the spec actually asks — flag a metric that subtly answers a different question (a rate where the spec needs a volume, an average masking a distribution), a likely misread by the output's audience, and survivorship or excluded segments that could change the conclusion. Quote the spec line for each finding; (d) items are judgement calls, tag them as such. Under 400 words."
 
 If the spec is missing, skip the Spec sub-agent and note this in the final report.
 

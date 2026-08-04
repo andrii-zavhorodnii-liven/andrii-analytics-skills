@@ -1,15 +1,16 @@
 # Logic Prototype
 
-A tiny interactive terminal app that lets the user drive a state model by hand. Use this when the question is about **business logic, state transitions, or data shape** — the kind of thing that looks reasonable on paper but only feels wrong once you push it through real cases.
+A tiny interactive terminal app that lets the user drive a state model by hand. Use this when the question is about **logic, state transitions, or sequencing** — the kind of thing that looks reasonable on paper but only feels wrong once you push it through real cases.
 
 ## When this is the right shape
 
-- "I'm not sure if this state machine handles the edge case where X then Y."
-- "Does this data model actually let me represent the case where..."
-- "I want to feel out what the API should look like before writing it."
-- Anything where the user wants to **press buttons and watch state change**.
+- "I'm not sure this ingestion cursor handles a late-arriving batch followed by a replay."
+- "Does this backfill state machine cope with a partition being reprocessed twice?"
+- "What should the retry / dead-letter policy actually do when the source API rate-limits mid-page?"
+- "Does this slowly-changing-dimension model let me represent a record that changes twice in one day?"
+- Anything where the user wants to **press keys and watch state change**.
 
-If the question is "what should this look like" — wrong branch. Use [UI.md](UI.md).
+If the question is "what should the output look like" — wrong branch. Use [SHAPE.md](SHAPE.md).
 
 ## Process
 
@@ -19,9 +20,9 @@ Before writing code, write down what state model and what question you're protot
 
 ### 2. Pick the language
 
-Use whatever the host project uses. If the project has no obvious runtime (e.g. a docs repo), ask.
+Use whatever the host project uses — for most of our repos that's Python under `uv`, run with `uv run <path>`. If the project has no obvious runtime (a Dataform-only repo, say), a standalone `uv run --script` file with inline dependencies is the lightest thing that works.
 
-Match the project's existing conventions for tooling — don't add a new package manager or runtime just for the prototype.
+Match the project's existing conventions for tooling — don't add a new package manager or runtime just for the prototype. Don't reach for a notebook: hidden execution order makes a state prototype impossible to trust.
 
 ### 3. Isolate the logic in a portable module
 
@@ -29,23 +30,23 @@ Put the actual logic — the bit that's answering the question — behind a smal
 
 The right shape depends on the question:
 
-- **A pure reducer** — `(state, action) => state`. Good when actions are discrete events and state is a single value.
+- **A pure reducer** — `reduce(state, event) -> state`. Good when events are discrete and state is a single value.
 - **A state machine** — explicit states and transitions. Good when "which actions are even legal right now" is part of the question.
 - **A small set of pure functions** over a plain data type. Good when there's no implicit current state — just transformations.
 - **A class or module with a clear method surface** when the logic genuinely owns ongoing internal state.
 
-Pick whichever shape best fits the question being asked, *not* whichever is easiest to wire to a TUI. Keep it pure: no I/O, no terminal code, no `console.log` for control flow. The TUI imports it and calls into it; nothing flows the other direction.
+Pick whichever shape best fits the question being asked, *not* whichever is easiest to wire to a TUI. Keep it pure: no I/O, no terminal code, no warehouse client, no `print` for control flow. The TUI imports it and calls into it; nothing flows the other direction.
 
 This is what makes the prototype useful past its own lifetime: when the question's been answered, the validated reducer / machine / function set can be lifted into the real module on its own.
 
 ### 4. Build the smallest TUI that exposes the state
 
-Build it as a **lightweight TUI** — on every tick, clear the screen (`console.clear()` / `print("\033[2J\033[H")` / equivalent) and re-render the whole frame. The user should always see one stable view, not an ever-growing scrollback.
+Build it as a **lightweight TUI** — on every tick, clear the screen (`print("\033[2J\033[H", end="")` or equivalent) and re-render the whole frame. The user should always see one stable view, not an ever-growing scrollback.
 
 Each frame has two parts, in this order:
 
 1. **Current state**, pretty-printed and diff-friendly (one field per line, or formatted JSON). Use **bold** for field names or section headers and **dim** for less important context (timestamps, IDs, derived values). Native ANSI escape codes are fine — `\x1b[1m` bold, `\x1b[2m` dim, `\x1b[0m` reset. No need to pull in a styling library unless one is already in the project.
-2. **Keyboard shortcuts**, listed at the bottom: `[a] add user  [d] delete user  [t] tick clock  [q] quit`. Bold the key, dim the description, or vice-versa — whatever reads cleanly.
+2. **Keyboard shortcuts**, listed at the bottom: `[b] arrive batch  [l] late event  [r] replay partition  [t] tick clock  [q] quit`. Bold the key, dim the description, or vice-versa — whatever reads cleanly.
 
 Behaviour:
 
@@ -58,7 +59,7 @@ The whole frame should fit on one screen.
 
 ### 5. Make it runnable in one command
 
-Add a script to the project's existing task runner (`package.json` scripts, `Makefile`, `justfile`, `pyproject.toml`). The user should run `pnpm run <prototype-name>` or equivalent — never need to remember a path.
+Add a target to the project's existing task runner (`Makefile`, `justfile`, `pyproject.toml` scripts). The user should run `make <prototype-name>` or `uv run <prototype-name>` — never need to remember a path.
 
 If the host project has no task runner, just put the command at the top of the prototype's README.
 
@@ -73,7 +74,7 @@ Once the prototype has answered its question, capture the answer, then capture t
 ## Anti-patterns
 
 - **Don't add tests.** A prototype that needs tests is no longer a prototype.
-- **Don't wire it to the real database.** Use an in-memory store unless the question is specifically about persistence.
+- **Don't wire it to the warehouse.** Use an in-memory store with a few hand-written events. A logic prototype that has to query BigQuery to take a step is slow, costly, and no longer answering a logic question.
 - **Don't generalise.** No "what if we wanted to support X later." The prototype answers one question.
-- **Don't blur the logic and the TUI together.** If the reducer / state machine references `console.log`, prompts, or terminal escape codes, it's no longer portable. Keep the TUI as a thin shell over a pure module.
+- **Don't blur the logic and the TUI together.** If the reducer / state machine references `print`, prompts, or terminal escape codes, it's no longer portable. Keep the TUI as a thin shell over a pure module.
 - **Don't ship the TUI shell into production.** The shell is optimised for being driven by hand from a terminal. The logic module behind it is the bit worth keeping.

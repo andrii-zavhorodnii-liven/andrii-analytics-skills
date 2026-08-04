@@ -11,7 +11,7 @@ When exploring the codebase, read `CONTEXT.md` (if it exists) so test names and 
 
 ## What a good test is
 
-Tests verify behavior through public interfaces, not implementation details. Code can change entirely; tests shouldn't. A good test reads like a specification — "user can checkout with valid cart" tells you exactly what capability exists — and survives refactors because it doesn't care about internal structure.
+Tests verify behavior through public interfaces, not implementation details. Code can change entirely; tests shouldn't. A good test reads like a specification — "sessionisation splits on a thirty-minute gap" tells you exactly what capability exists — and survives refactors because it doesn't care about internal structure.
 
 See [tests.md](tests.md) for examples and [mocking.md](mocking.md) for mocking guidelines.
 
@@ -23,10 +23,19 @@ A **seam** is the public boundary you test at: the interface where you observe b
 
 Ask: "What's the public interface, and which seams should we test?"
 
+In a pipeline the seams worth agreeing on are usually:
+
+- **The transformation** — plain data in, plain data out. Almost always the highest-value seam, and it needs no infrastructure.
+- **The source adapter** — driven by a fake API returning recorded payloads, including the awkward ones: an empty page, a rate-limit response, a field that's suddenly null.
+- **The output contract** — what downstream is entitled to assume. In Python that's a test; in the Dataform graph it's an **assertion** (`uniqueKey`, `nonNull`, or a custom zero-rows check). Grain and uniqueness belong here, not in a comment.
+
+Not a seam: the warehouse client's own behaviour. BigQuery works; testing that it inserts rows tests Google's code, not yours.
+
 ## Anti-patterns
 
-- **Implementation-coupled** — mocks internal collaborators, tests private methods, or verifies through a side channel (querying the database instead of using the interface). The tell: the test breaks when you refactor but behavior hasn't changed.
-- **Tautological** — the assertion recomputes the expected value the way the code does (`expect(add(a, b)).toBe(a + b)`, a snapshot derived by hand the same way, a constant asserted equal to itself), so it passes by construction and can never disagree with the code. Expected values must come from an independent source of truth — a known-good literal, a worked example, the spec.
+- **Implementation-coupled** — mocks internal collaborators, tests private functions, or verifies through a side channel (querying the output table directly instead of using the interface). The tell: the test breaks when you refactor but behavior hasn't changed.
+- **Tautological** — the assertion recomputes the expected value the way the code does (`assert revenue(lines) == sum(l["amount"] for l in lines)`, a snapshot derived by hand the same way, a constant asserted equal to itself), so it passes by construction and can never disagree with the code. Expected values must come from an independent source of truth — a known-good literal, a worked example, the spec.
+- **Tested against live data.** A test whose expected value is whatever production currently returns passes today and means nothing tomorrow. Fixtures are hand-written rows, committed to the repo, small enough to read. Real data belongs in `/research-data`, not in an assertion.
 - **Horizontal slicing** — writing all tests first, then all implementation. Bulk tests verify _imagined_ behavior: you test the _shape_ of things rather than user-facing behavior, the tests go insensitive to real changes, and you commit to test structure before understanding the implementation. Work in **vertical slices** instead — one test → one implementation → repeat, each test a **tracer bullet** that responds to what the last cycle taught you.
 
 ## Rules of the loop
@@ -34,3 +43,4 @@ Ask: "What's the public interface, and which seams should we test?"
 - **Red before green.** Write the failing test first, then only enough code to pass it. Don't anticipate future tests or add speculative features.
 - **One slice at a time.** One seam, one test, one minimal implementation per cycle.
 - **Refactoring is not part of the loop.** It belongs to the review stage (see the `code-review` skill), not the red → green implementation cycle.
+- **Fixtures stay tiny.** Three rows that cover the case beat three hundred that obscure it. If a fixture is too big to read in the test file, the test has stopped documenting anything.
