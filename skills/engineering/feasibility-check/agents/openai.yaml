@@ -1,0 +1,5 @@
+interface:
+  display_name: "Feasibility Check"
+  short_description: "Pressure-test an ask before promising an estimate"
+policy:
+  allow_implicit_invocation: false

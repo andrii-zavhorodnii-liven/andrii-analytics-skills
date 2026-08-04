@@ -35,6 +35,8 @@ The limit on this is the **smart zone**: the window (~120k tokens on current mod
 
 A starting situation that generates work, then merges onto the main flow.
 
+- **A stakeholder ask lands and someone wants an estimate** → **`/feasibility-check`**. Before anyone promises anything, it traces the real system the change would plug into, tags each piece ✓ have / ✗ build / ⛔ can't / ⚠ unknown, and returns one verdict with the single check to run first. Its verdict is a route: **feasible** → `/grill-with-docs` and the main flow; **too big or foggy for one session** → `/wayfinder`, seeded by its ⚠ rows; **check first** → `/research-data` or `/research-docs`. It has a light "smell test" mode for small asks — reach for it any time you're about to say "sure, about a week."
+
 - **Bugs and requests piling up** → **`/triage`**. It moves issues through triage roles and produces agent-ready issues, which **`/implement`** later picks up.
 
   Triage is only for issues **you didn't create** — bug reports, incoming feature requests, anything that arrives raw. Tickets that `/to-tickets` produced are already agent-ready, so **don't triage them**.
