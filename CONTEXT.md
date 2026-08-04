@@ -1,11 +1,11 @@
-# Matt Pocock Skills
+# Andrii Analytics Skills
 
-A collection of agent skills (slash commands and behaviors) loaded by Claude Code. Skills are organized into buckets and consumed by per-repo configuration emitted by `/setup-matt-pocock-skills`.
+A collection of agent skills (slash commands and behaviors) loaded by Claude Code, aimed at data science, data engineering and analytics work. Skills are organized into buckets and consumed by per-repo configuration emitted by `/setup-analytics-skills`.
 
 ## Language
 
 **Issue tracker**:
-The tool that hosts a repo's issues — GitHub Issues, Linear, a local `.scratch/` markdown convention, or similar. Skills like `to-tickets`, `to-spec`, `triage`, and `qa` read from and write to it.
+The tool that hosts a repo's issues — **GitHub Issues** by default, or a local `.scratch/` markdown convention for repos with no remote. Skills like `to-tickets`, `to-spec`, `triage`, and `wayfinder` read from and write to it.
 _Avoid_: backlog manager, backlog backend, issue host
 
 **Issue**:
@@ -18,13 +18,19 @@ A `wayfinder` unit — a child **Issue** of a `wayfinder:map` holding a *questio
 **Triage role**:
 A canonical state-machine label applied to an **Issue** during triage (e.g. `needs-triage`, `ready-for-afk`). Each role maps to a real label string in the **Issue tracker** via `docs/agents/triage-labels.md`.
 
+**Target stack**:
+The stack every skill's examples are drawn from: BigQuery with transformations in Dataform, Python pipelines managed with `uv` and deployed to Cloud Run, and modelling on Vertex AI. A skill introducing an example outside it (a frontend framework, a Node toolchain) has drifted.
+_Avoid_: our stack, the platform
+
 ## Relationships
 
 - An **Issue tracker** holds many **Issues**
 - An **Issue** carries one **Triage role** at a time
 - A **Decision ticket** is an **Issue** (a child of a `wayfinder:map`)
+- Every skill's examples are drawn from the **Target stack**
 
 ## Flagged ambiguities
 
 - "backlog" was previously used to mean both the *tool* hosting issues and the *body of work* inside it — resolved: the tool is the **Issue tracker**; "backlog" is no longer used as a domain term.
 - "backlog backend" / "backlog manager" — resolved: collapsed into **Issue tracker**.
+- "research" used to name one skill; it now names three (`research-docs`, `research-data`, `research-web`) — resolved: never use bare "research" for a skill, only for the activity.
