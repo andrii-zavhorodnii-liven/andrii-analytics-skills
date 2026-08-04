@@ -35,8 +35,10 @@ A LONG, numbered list of user stories. Each user story should be in the format o
 1. As an <actor>, I want a <feature>, so that <benefit>
 
 <user-story-example>
-1. As a mobile bank customer, I want to see balance on my accounts, so that I can make better informed decisions about my spending
+1. As a growth analyst, I want signup source available on the daily active users table, so that I can attribute activation without joining three tables by hand
 </user-story-example>
+
+The actor is whoever consumes the output — an analyst, a stakeholder reading a dashboard, a downstream model, a served ML endpoint. "As a developer, I want…" is almost always a sign the story has been written from the implementation inwards.
 
 This list of user stories should be extremely extensive and cover all aspects of the feature.
 
@@ -44,24 +46,27 @@ This list of user stories should be extremely extensive and cover all aspects of
 
 A list of implementation decisions that were made. This can include:
 
-- The modules that will be built/modified
+- The modules, models, or jobs that will be built/modified
 - The interfaces of those modules that will be modified
 - Technical clarifications from the developer
 - Architectural decisions
-- Schema changes
-- API contracts
-- Specific interactions
+- Output schema, **grain**, partitioning and clustering — state the grain explicitly; it's the single most common thing a spec leaves implicit and an implementation gets wrong
+- Source contracts: which fields are relied on, what happens when one goes missing or null
+- Backfill and idempotency: whether a re-run replaces, appends, or merges, and what a replay of a past partition does
+- Freshness and scheduling expectations
+- For a model: the target definition, the train/test split policy, and which features are available at prediction time
 
 Do NOT include specific file paths or code snippets. They may end up being outdated very quickly.
 
-Exception: if a prototype produced a snippet that encodes a decision more precisely than prose can (state machine, reducer, schema, type shape), inline it within the relevant decision and note briefly that it came from a prototype. Trim to the decision-rich parts — not a working demo, just the important bits.
+Exception: if a prototype produced a snippet that encodes a decision more precisely than prose can (a state machine, a table schema with its grain, a metric's SQL definition), inline it within the relevant decision and note briefly that it came from a prototype. Trim to the decision-rich parts — not a working demo, just the important bits.
 
 ## Testing Decisions
 
 A list of testing decisions that were made. Include:
 
 - A description of what makes a good test (only test external behavior, not implementation details)
-- Which modules will be tested
+- Which modules will be tested, and at which seams
+- Which guarantees become **Dataform assertions** rather than Python tests — grain, uniqueness, non-null, referential checks. A guarantee the spec states and nothing enforces will quietly stop being true.
 - Prior art for the tests (i.e. similar types of tests in the codebase)
 
 ## Out of Scope
