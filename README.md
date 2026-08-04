@@ -14,7 +14,7 @@ These skills are deliberately small, easy to adapt, and composable. They work wi
 This repo is its own marketplace, so add it, then install:
 
 ```bash
-/plugin marketplace add AndriiZavhorodnii/andrii-analytics-skills
+/plugin marketplace add andrii-zavhorodnii-liven/andrii-analytics-skills
 /plugin install andrii-analytics-skills
 ```
 
@@ -26,7 +26,7 @@ This repo is its own marketplace, so add it, then install:
 Symlink every skill into the local harness skill directories (`~/.claude/skills`, `~/.agents/skills`):
 
 ```bash
-git clone https://github.com/AndriiZavhorodnii/andrii-analytics-skills
+git clone https://github.com/andrii-zavhorodnii-liven/andrii-analytics-skills
 cd andrii-analytics-skills
 scripts/link-skills.sh
 ```

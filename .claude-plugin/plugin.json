@@ -4,10 +4,10 @@
   "description": "Agent skills for data science, engineering and analytics \u2014 grilling, spec/issue flows, TDD, code review, domain modelling. Built for BigQuery + Dataform, Python/uv pipelines, and Vertex AI. Plug-and-play, not vibe coding.",
   "author": {
     "name": "Andrii Zavhorodnii",
-    "url": "https://github.com/AndriiZavhorodnii"
+    "url": "https://github.com/andrii-zavhorodnii-liven"
   },
-  "homepage": "https://github.com/AndriiZavhorodnii/andrii-analytics-skills",
-  "repository": "https://github.com/AndriiZavhorodnii/andrii-analytics-skills",
+  "homepage": "https://github.com/andrii-zavhorodnii-liven/andrii-analytics-skills",
+  "repository": "https://github.com/andrii-zavhorodnii-liven/andrii-analytics-skills",
   "license": "MIT",
   "keywords": [
     "data-engineering",

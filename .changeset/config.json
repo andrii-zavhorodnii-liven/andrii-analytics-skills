@@ -2,7 +2,7 @@
   "$schema": "https://unpkg.com/@changesets/config@3.1.4/schema.json",
   "changelog": [
     "@changesets/changelog-github",
-    { "repo": "AndriiZavhorodnii/andrii-analytics-skills" }
+    { "repo": "andrii-zavhorodnii-liven/andrii-analytics-skills" }
   ],
   "commit": false,
   "privatePackages": { "version": true, "tag": true },
