@@ -64,6 +64,10 @@ On top of the smell baseline, the Standards axis carries a **data baseline** —
 - **Hidden clock dependency** — `CURRENT_DATE()` / `datetime.now()` inside logic, so the same input produces different output tomorrow. → pass the date in as a parameter.
 - **Leakage** — a feature or label computed from information not available at prediction time. → recompute it as of the prediction timestamp.
 - **Hardcoded identifiers** — a project, dataset, or bucket name inline instead of resolved from config or `workflow_settings.yaml`. → move it to config.
+- **Fan-out join** — a join whose other side isn't unique on the join key, silently duplicating rows before an aggregate. → verify or enforce uniqueness on that side; `DISTINCT` after the fact masks it, it doesn't fix it.
+- **Silent population filter** — a `WHERE` clause or join condition that quietly drops a segment the metric claims to cover (an inner join standing in for a left join, a status filter excluding edge states). → make the exclusion explicit and intended, or widen the join.
+- **NULL-blind aggregate** — a ratio or aggregate whose numerator and denominator treat NULLs differently, or where `COUNT(col)` vs `COUNT(*)` changes the answer. → decide what a NULL means here and encode it.
+- **Temporal boundary error** — an off-by-one date range, an incomplete trailing period presented as complete, or a window mixing event time with ingestion time. → pin the boundary semantics and exclude or label the partial edge.
 
 ### 4. Spawn both sub-agents in parallel
 
@@ -79,7 +83,7 @@ Send a single message with two `Agent` tool calls. Use the `general-purpose` sub
 
 - The diff command and commit list.
 - The path or fetched contents of the spec.
-- The brief: "Report: (a) requirements the spec asked for that are missing or partial; (b) behaviour in the diff that wasn't asked for (scope creep); (c) requirements that look implemented but where the implementation looks wrong. Quote the spec line for each finding. Under 400 words."
+- The brief: "Report: (a) requirements the spec asked for that are missing or partial; (b) behaviour in the diff that wasn't asked for (scope creep); (c) requirements that look implemented but where the implementation looks wrong; (d) where the diff defines or changes a metric, analysis query, or stakeholder-facing output, whether it answers the question the spec actually asks — flag a metric that subtly answers a different question (a rate where the spec needs a volume, an average masking a distribution), a likely misread by the output's audience, and survivorship or excluded segments that could change the conclusion. Quote the spec line for each finding; (d) items are judgement calls, tag them as such. Under 400 words."
 
 If the spec is missing, skip the Spec sub-agent and note this in the final report.
 
