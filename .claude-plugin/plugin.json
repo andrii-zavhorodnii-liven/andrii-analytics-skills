@@ -39,6 +39,8 @@
     "./skills/engineering/research-docs",
     "./skills/engineering/research-data",
     "./skills/engineering/research-web",
+    "./skills/engineering/to-experiment",
+    "./skills/engineering/cloud-run-to-repo",
     "./skills/productivity/grilling",
     "./skills/productivity/grill-me",
     "./skills/productivity/handoff",

@@ -85,3 +85,5 @@ The specific approach means:
 **4. Inject the clock**
 
 Anything that windows, partitions, or watermarks depends on "now", and a test that depends on the real clock is a test that fails at midnight. Pass `now` in as an argument, or inject a clock function — never call `datetime.now()` inside the logic under test.
+
+This is the same rule `/code-review`'s data baseline flags as **Hidden clock dependency** — if the rule changes, change it in both places.

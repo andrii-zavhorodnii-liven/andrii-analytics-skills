@@ -1,0 +1,3 @@
+interface:
+  display_name: "To Experiment"
+  short_description: "Spin up a sibling experiments repo for throwaway exploration"

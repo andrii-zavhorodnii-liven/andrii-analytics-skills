@@ -150,6 +150,8 @@ Daily data, analytics and platform work.
 - **[domain-modeling](./skills/engineering/domain-modeling/SKILL.md)** — Actively build and sharpen a project's domain model — challenge terms, pin down grain and which timestamp a word means, update `CONTEXT.md` and ADRs inline.
 - **[codebase-design](./skills/engineering/codebase-design/SKILL.md)** — Shared discipline and vocabulary for designing deep modules: a lot of behaviour behind a small interface, placed at a clean seam, testable through that interface.
 - **[resolving-merge-conflicts](./skills/engineering/resolving-merge-conflicts/SKILL.md)** — Work through an in-progress git merge or rebase conflict hunk by hunk, resolving by intent traced to each side's primary source, then finish the operation — never `--abort`.
+- **[to-experiment](./skills/engineering/to-experiment/SKILL.md)** — Spin up a sibling `<main>-experiments` repo for throwaway exploration work: a `uv`-managed Python project with plain `.py` scripts, no notebooks.
+- **[cloud-run-to-repo](./skills/engineering/cloud-run-to-repo/SKILL.md)** — Recover an ad-hoc-deployed Cloud Run service into a git repo — uv-managed, with a repeatable `deploy.sh` that mirrors every live runtime flag.
 
 ### Productivity
 
