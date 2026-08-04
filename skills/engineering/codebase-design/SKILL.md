@@ -70,29 +70,29 @@ Good interfaces make testing natural:
 
 1. **Accept dependencies, don't create them.**
 
-   ```typescript
-   // Testable
-   function processOrder(order, paymentGateway) {}
+   ```python
+   # Testable
+   def load_orders(orders, warehouse): ...
 
-   // Hard to test
-   function processOrder(order) {
-     const gateway = new StripeGateway();
-   }
+   # Hard to test
+   def load_orders(orders):
+       warehouse = bigquery.Client(project=os.environ["GCP_PROJECT"])
    ```
 
 2. **Return results, don't produce side effects.**
 
-   ```typescript
-   // Testable
-   function calculateDiscount(cart): Discount {}
+   ```python
+   # Testable
+   def to_staging_rows(payload: dict) -> list[Row]: ...
 
-   // Hard to test
-   function applyDiscount(cart): void {
-     cart.total -= discount;
-   }
+   # Hard to test
+   def write_staging_rows(payload: dict) -> None:
+       warehouse.insert("staging.orders", shape(payload))
    ```
 
 3. **Small surface area.** Fewer methods = fewer tests needed. Fewer params = simpler test setup.
+
+A note on the warehouse: a Dataform model has an interface too — its output columns, its grain, and its declared `config`. Everything else (the CTEs, the intermediate joins, how many steps it takes) is implementation. A model whose consumers depend on the shape of an internal CTE has leaked its implementation just as surely as a Python class exposing its private state.
 
 ## Relationships
 
@@ -105,7 +105,7 @@ Good interfaces make testing natural:
 ## Rejected framings
 
 - **Depth as ratio of implementation-lines to interface-lines** (Ousterhout): rewards padding the implementation. We use depth-as-leverage instead.
-- **"Interface" as the TypeScript `interface` keyword or a class's public methods**: too narrow — interface here includes every fact a caller must know.
+- **"Interface" as a language's `interface`/`Protocol` construct or a class's public methods**: too narrow — interface here includes every fact a caller must know, up to and including a table's grain and partitioning.
 - **"Boundary"**: overloaded with DDD's bounded context. Say **seam** or **interface**.
 
 ## Going deeper

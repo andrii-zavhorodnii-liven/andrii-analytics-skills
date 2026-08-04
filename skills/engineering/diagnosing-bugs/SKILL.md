@@ -18,10 +18,10 @@ Spend disproportionate effort here. **Be aggressive. Be creative. Refuse to give
 ### Ways to construct one — try them in roughly this order
 
 1. **Failing test** at whatever seam reaches the bug — unit, integration, e2e.
-2. **Curl / HTTP script** against a running dev server.
-3. **CLI invocation** with a fixture input, diffing stdout against a known-good snapshot.
-4. **Headless browser script** (Playwright / Puppeteer) — drives the UI, asserts on DOM/console/network.
-5. **Replay a captured trace.** Save a real network request / payload / event log to disk; replay it through the code path in isolation.
+2. **CLI or script invocation** with a fixture input, diffing stdout against a known-good snapshot — `uv run <script>` over a handful of committed rows.
+3. **A query that returns the wrong rows.** For a data bug, the tightest loop is usually a single query whose result set *is* the symptom: the duplicate keys, the nulls that shouldn't be there, the day whose total is wrong. Bound it to one partition so it runs in seconds and costs nothing, and assert the expected row count.
+4. **A Dataform assertion, run in isolation.** Compile and run just the assertion (`dataform run --actions <assertion>`), or lift its SQL out and run it directly. It already encodes "this must be zero rows" — that's a pass/fail signal you didn't have to build.
+5. **Replay a captured payload.** Save a real API response / event batch / source file to disk; replay it through the code path in isolation. For a source-data bug this is often the only honest repro, because the upstream will have moved on by tomorrow.
 6. **Throwaway harness.** Spin up a minimal subset of the system (one service, mocked deps) that exercises the bug code path with a single function call.
 7. **Property / fuzz loop.** If the bug is "sometimes wrong output", run 1000 random inputs and look for the failure mode.
 8. **Bisection harness.** If the bug appeared between two known states (commit, dataset, version), automate "boot at state X, check, repeat" so you can `git bisect run` it.
@@ -103,7 +103,9 @@ Tool preference:
 
 **Tag every debug log** with a unique prefix, e.g. `[DEBUG-a4f2]`. Cleanup at the end becomes a single grep. Untagged logs survive; tagged logs die.
 
-**Perf branch.** For performance regressions, logs are usually wrong. Instead: establish a baseline measurement (timing harness, `performance.now()`, profiler, query plan), then bisect. Measure first, fix second.
+**Perf branch.** For performance regressions, logs are usually wrong. Instead: establish a baseline measurement, then bisect. Measure first, fix second.
+
+For a slow or expensive query, the measurement is the **query plan and the job statistics**, not a stopwatch: bytes processed, slot-milliseconds, stages, and whether the partition filter was actually applied. `bq query --dry_run` gives you the bytes before you spend them, and the job's execution details tell you where the time went. A query that got slower almost always got slower because it started scanning more — check that before theorising about anything else.
 
 ## Phase 5 — Fix + regression test
 

@@ -18,9 +18,10 @@ Single-context repo (most repos):
 /
 ├── CONTEXT.md
 ├── docs/adr/
-│   ├── 0001-event-sourced-orders.md
-│   └── 0002-postgres-for-write-model.md
-└── src/
+│   ├── 0001-one-row-per-order-line-grain.md
+│   └── 0002-partition-marts-by-event-date.md
+├── definitions/        ← Dataform SQLX
+└── pipelines/          ← Python ingestion jobs
 ```
 
 Multi-context repo (presence of `CONTEXT-MAP.md` at the root):
@@ -28,12 +29,12 @@ Multi-context repo (presence of `CONTEXT-MAP.md` at the root):
 ```
 /
 ├── CONTEXT-MAP.md
-├── docs/adr/                          ← system-wide decisions
+├── docs/adr/                          ← platform-wide decisions
 └── src/
-    ├── ordering/
+    ├── ingestion/
     │   ├── CONTEXT.md
     │   └── docs/adr/                  ← context-specific decisions
-    └── billing/
+    └── marts/
         ├── CONTEXT.md
         └── docs/adr/
 ```
@@ -48,4 +49,4 @@ If the concept you need isn't in the glossary yet, that's a signal — either yo
 
 If your output contradicts an existing ADR, surface it explicitly rather than silently overriding:
 
-> _Contradicts ADR-0007 (event-sourced orders) — but worth reopening because…_
+> _Contradicts ADR-0007 (one row per order line) — but worth reopening because…_

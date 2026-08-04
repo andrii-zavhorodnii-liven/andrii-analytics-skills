@@ -30,7 +30,7 @@ capture() {
 
 step "Open the app at http://localhost:3000 and sign in."
 
-capture ERRORED "Click the 'Export' button. Did it throw an error? (y/n)"
+capture ERRORED "Trigger the scheduled run manually. Did it fail? (y/n)"
 
 capture ERROR_MSG "Paste the error message (or 'none'):"
 
