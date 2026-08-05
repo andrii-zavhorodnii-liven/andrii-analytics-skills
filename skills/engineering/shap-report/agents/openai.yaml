@@ -1,0 +1,5 @@
+interface:
+  display_name: "SHAP report"
+  short_description: "SHAP side-by-side HTML report for the published roster"
+policy:
+  allow_implicit_invocation: false
