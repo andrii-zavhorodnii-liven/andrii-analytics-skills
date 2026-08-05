@@ -19,6 +19,10 @@ Pick model-invocation only when the agent must reach the skill on its own, or an
 
 When user-invoked skills multiply past what you can remember, that piled-up cognitive load is cured by a **router skill**: one user-invoked skill that names the others and when to reach for each.
 
+## Where skills live
+
+Placement follows scope. A skill useful in exactly one project lives in that project's `.claude/skills/` and travels with that repo — no linking, no promotion. A skill meant to be available at user level — any project, any session — is authored in the `andrii-analytics-skills` repo, never written straight into `~/.claude/skills`. Find the repo by resolving any installed skill's symlink: `readlink ~/.claude/skills/writing-great-skills` points into it. Place it in the right bucket (`skills/engineering/` or `skills/productivity/`) and follow that repo's `CLAUDE.md` conventions (README entries, `plugin.json`, the `ask-andrii` router), then run `scripts/link-skills.sh` there to symlink it into `~/.claude/skills` and `~/.agents/skills`. Installed entries are symlinks, so edits to an existing skill are live immediately; re-run the script only after adding, renaming, or removing a skill.
+
 ## Writing the description
 
 A model-invoked **description** does two jobs — state what the skill is, and list the **branches** that should trigger it. Every word increases **context load**, so a description earns even harder pruning than the body:
