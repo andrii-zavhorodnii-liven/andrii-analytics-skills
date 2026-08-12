@@ -18,3 +18,10 @@ Never run a pipeline against a production destination to check your work. Use a 
 Once done, use /code-review to review the work.
 
 Commit your work to the current branch.
+
+Then close the ticket you implemented: `gh issue close <n> --comment "..."`. Close it as
+soon as the work is committed and the acceptance criteria are met — **do not wait for a
+PR to be opened or merged**, and do not ask permission first. The user has decided that
+committed and verified is done; a branch that has not merged yet is not a reason to leave
+the ticket open. The closing comment should name the branch and commit, say which
+acceptance criteria are covered, and flag anything deliberately left out.
