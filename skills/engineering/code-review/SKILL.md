@@ -1,12 +1,14 @@
 ---
 name: code-review
-description: Review the changes since a fixed point (commit, branch, tag, or merge-base) along two axes — Standards (does the code follow this repo's documented coding standards?) and Spec (does the code match what the originating issue/PRD asked for?). Runs both reviews in parallel sub-agents and reports them side by side. Use when the user wants to review a branch, a PR, work-in-progress changes, or asks to "review since X".
+description: Review the changes since a fixed point (commit, branch, tag, or merge-base) along two axes — Standards (does the change follow this repo's documented standards, plus a baseline chosen from what the diff is made of — code or skill markdown?) and Spec (does it match what the originating issue/PRD asked for?). Runs both reviews in parallel sub-agents and reports them side by side. Use when the user wants to review a branch, a PR, work-in-progress changes, a skill's markdown, or asks to "review since X".
 ---
 
 Two-axis review of the diff between `HEAD` and a fixed point the user supplies:
 
-- **Standards** — does the code conform to this repo's documented coding standards?
-- **Spec** — does the code faithfully implement the originating issue / PRD / spec?
+- **Standards** — does the change conform to this repo's documented standards?
+- **Spec** — does the change faithfully implement the originating issue / PRD / spec?
+
+The diff can be code or a skill's own markdown; step 3 picks the baseline from what it holds.
 
 Both axes run as **parallel sub-agents** so they don't pollute each other's context, then this skill aggregates their findings.
 
@@ -33,41 +35,12 @@ Look for the originating spec, in this order:
 
 ### 3. Identify the standards sources
 
-Anything in the repo that documents how code should be written, such as `CODING_STANDARDS.md` or `CONTRIBUTING.md`.
+Anything in the repo that documents how its contents should be written, such as `CODING_STANDARDS.md`, `CONTRIBUTING.md`, or a `CLAUDE.md` carrying repo conventions.
 
-On top of whatever the repo documents, the Standards axis always carries the **smell baseline** below — a fixed set of Fowler code smells (_Refactoring_, ch.3) that applies even when a repo documents nothing. Two rules bind it:
+On top of whatever the repo documents, the Standards axis carries a **baseline** — the failure modes that apply even when a repo documents nothing. Which baseline applies follows each changed file, so a diff holding both kinds carries both baselines — each file judged against its own:
 
-- **The repo overrides.** A documented repo standard always wins; where it endorses something the baseline would flag, suppress the smell.
-- **Always a judgement call.** Each smell is a labelled heuristic ("possible Feature Envy"), never a hard violation — and, like any standard here, skip anything tooling already enforces.
-
-Each smell reads *what it is* → *how to fix*; match it against the diff:
-
-- **Mysterious Name** — a function, variable, or type whose name doesn't reveal what it does or holds. → rename it; if no honest name comes, the design's murky.
-- **Duplicated Code** — the same logic shape appears in more than one hunk or file in the change. → extract the shared shape, call it from both.
-- **Feature Envy** — a method that reaches into another object's data more than its own. → move the method onto the data it envies.
-- **Data Clumps** — the same few fields or params keep travelling together (a type wanting to be born). → bundle them into one type, pass that.
-- **Primitive Obsession** — a primitive or string standing in for a domain concept that deserves its own type. → give the concept its own small type.
-- **Repeated Switches** — the same `switch`/`if`-cascade on the same type recurs across the change. → replace with polymorphism, or one map both sites share.
-- **Shotgun Surgery** — one logical change forces scattered edits across many files in the diff. → gather what changes together into one module.
-- **Divergent Change** — one file or module is edited for several unrelated reasons. → split so each module changes for one reason.
-- **Speculative Generality** — abstraction, parameters, or hooks added for needs the spec doesn't have. → delete it; inline back until a real need shows.
-- **Message Chains** — long `a.b().c().d()` navigation the caller shouldn't depend on. → hide the walk behind one method on the first object.
-- **Middle Man** — a class or function that mostly just delegates onward. → cut it, call the real target direct.
-- **Refused Bequest** — a subclass or implementer that ignores or overrides most of what it inherits. → drop the inheritance, use composition.
-
-On top of the smell baseline, the Standards axis carries a **data baseline** — the failure modes that are cheap to introduce here and expensive to discover in production. Same rules bind it: a documented repo standard overrides, and each item is a judgement call.
-
-- **Unbounded scan** — a query over a partitioned table with no partition filter, or a `SELECT *` on a wide table. → add the filter; select the columns you need.
-- **Unenforced grain** — a new or changed output table whose grain isn't guaranteed by a `uniqueKey` or an assertion. → add the assertion; a grain in a comment isn't a grain.
-- **Silent full refresh** — an incremental model changed in a way that quietly forces or breaks a full rebuild. → make the intent explicit and say what it costs.
-- **Non-idempotent write** — a load path where re-running a partition duplicates or loses rows. → make the write replace or merge on a key.
-- **Hidden clock dependency** — `CURRENT_DATE()` / `datetime.now()` inside logic, so the same input produces different output tomorrow. → pass the date in as a parameter.
-- **Leakage** — a feature or label computed from information not available at prediction time. → recompute it as of the prediction timestamp.
-- **Hardcoded identifiers** — a project, dataset, or bucket name inline instead of resolved from config or `workflow_settings.yaml`. → move it to config.
-- **Fan-out join** — a join whose other side isn't unique on the join key, silently duplicating rows before an aggregate. → verify or enforce uniqueness on that side; `DISTINCT` after the fact masks it, it doesn't fix it.
-- **Silent population filter** — a `WHERE` clause or join condition that quietly drops a segment the metric claims to cover (an inner join standing in for a left join, a status filter excluding edge states). → make the exclusion explicit and intended, or widen the join.
-- **NULL-blind aggregate** — a ratio or aggregate whose numerator and denominator treat NULLs differently, or where `COUNT(col)` vs `COUNT(*)` changes the answer. → decide what a NULL means here and encode it.
-- **Temporal boundary error** — an off-by-one date range, an incomplete trailing period presented as complete, or a window mixing event time with ingestion time. → pin the boundary semantics and exclude or label the partial edge.
+- **Code** → read [`code-baselines.md`](code-baselines.md): the Fowler smell baseline and the data baseline, plus the two rules that bind them.
+- **Skill markdown** — `SKILL.md` files and their sibling reference files, under a project's `.claude/skills/` or in the skills repo itself → read `~/.claude/skills/writing-great-skills/SKILL.md` and its `GLOSSARY.md`. Its **Failure modes** list is this branch's baseline: premature completion, duplication, sediment, sprawl, no-op, negation. If that path doesn't resolve, find the repo root by resolving an installed skill's symlink (`readlink ~/.claude/skills/code-review`) and read `skills/productivity/writing-great-skills/` there. Judge prose against that skill and nothing else.
 
 ### 4. Spawn both sub-agents in parallel
 
@@ -76,8 +49,8 @@ Send a single message with two `Agent` tool calls. Use the `general-purpose` sub
 **Standards sub-agent prompt** — include:
 
 - The full diff command and commit list.
-- The list of standards-source files you found in step 3, **plus both baselines from step 3 — the smell baseline and the data baseline** — pasted in full; the sub-agent has no other access to them.
-- The brief: "Report — per file/hunk where relevant — (a) every place the diff violates a documented standard: cite the standard (file + the rule); and (b) any smell or data-baseline issue you spot: name it and quote the hunk. Distinguish hard violations from judgement calls — documented-standard breaches can be hard, but baseline smells are always judgement calls, and a documented repo standard overrides the baseline. Skip anything tooling enforces. Under 400 words."
+- The list of standards-source files you found in step 3, **plus every baseline step 3 selected**, pasted in full; the sub-agent has no other access to them.
+- The brief: "Report — per file/hunk where relevant — (a) every place the diff violates a documented standard: cite the standard (file + the rule); and (b) any baseline issue you spot: name it and quote the hunk. Distinguish hard violations from judgement calls — documented-standard breaches can be hard, but baseline items are always judgement calls, and a documented repo standard overrides the baseline. Skip anything tooling enforces. Under 400 words."
 
 **Spec sub-agent prompt** — include:
 

@@ -15,6 +15,8 @@ Bucket `README.md`s and the top-level `README.md` group entries into **User-invo
 
 Dependencies are expressed as **`/skill`-style prose invocation** ("Run the `/grilling` skill"), not deep `../other-skill/FILE.md` cross-references. Shared reference docs live inside the skill that owns them; other skills reach that material by invoking the skill, not by linking across folders.
 
+One exception: a **user-invoked** skill can't be invoked by anything, so a skill needing its reference material passively — as a rulebook to judge against, not a process to run — reads it by path, naming the files. That keeps the owning skill the single source of truth instead of copying its rules into a second place.
+
 ## Passive vs active domain work
 
 Merely _reading_ `CONTEXT.md` for vocabulary is a one-line prose pointer, not the `domain-modeling` skill. Only the active build/sharpen discipline (challenge terms, edge-case scenarios, write ADRs, update `CONTEXT.md` inline) is `domain-modeling`.

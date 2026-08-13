@@ -1,0 +1,5 @@
+interface:
+  display_name: "Consolidating Work"
+  short_description: "Reap spent worktrees and branches, one PR per tip"
+policy:
+  allow_implicit_invocation: false

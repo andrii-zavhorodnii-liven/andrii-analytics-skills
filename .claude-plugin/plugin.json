@@ -1,6 +1,6 @@
 {
   "name": "andrii-analytics-skills",
-  "version": "1.1.0",
+  "version": "1.2.0",
   "description": "Agent skills for data science, engineering and analytics \u2014 grilling, spec/issue flows, TDD, code review, domain modelling. Built for BigQuery + Dataform, Python/uv pipelines, and Vertex AI. Plug-and-play, not vibe coding.",
   "author": {
     "name": "Andrii Zavhorodnii",
@@ -31,6 +31,7 @@
     "./skills/engineering/code-review",
     "./skills/engineering/diagnosing-bugs",
     "./skills/engineering/resolving-merge-conflicts",
+    "./skills/engineering/consolidating-work",
     "./skills/engineering/domain-modeling",
     "./skills/engineering/codebase-design",
     "./skills/engineering/improve-codebase-architecture",

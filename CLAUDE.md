@@ -5,7 +5,9 @@ Skills are organized into bucket folders under `skills/`:
 
 Both buckets are **promoted**: every skill in them must have a reference in the top-level `README.md` and an entry in `.claude-plugin/plugin.json`'s `skills` array (the Claude Code plugin ships exactly the promoted set). This repo carries no unpromoted buckets — a skill that isn't ready to ship doesn't land on `main`.
 
-The repo is also its own single-plugin Claude Code marketplace: `.claude-plugin/marketplace.json` lists the one `andrii-analytics-skills` plugin. When bumping the release version, keep `.claude-plugin/plugin.json`'s `version` in sync with `package.json`'s — Claude uses the plugin `version` to decide when installed users see an update. Run `claude plugin validate . --strict` after touching either manifest. Why a Claude plugin but not (yet) a Codex one lives in [.agents/adr/0002-ship-as-a-claude-code-plugin.md](./.agents/adr/0002-ship-as-a-claude-code-plugin.md).
+The repo is also its own single-plugin Claude Code marketplace: `.claude-plugin/marketplace.json` lists the one `andrii-analytics-skills` plugin. When bumping the release version, keep `.claude-plugin/plugin.json`'s `version` in sync with `package.json`'s — Claude uses the plugin `version` to decide when installed users see an update. Run `claude plugin validate . --strict` after touching either manifest.
+
+Bump the version by hand in both files, in the same commit — the `@changesets/cli` tooling in `package.json` is inherited from the upstream fork and is unused here. Bump the **minor** for anything installed users should receive: a new skill, or a change to how an existing one behaves. Leave it alone for repo-only edits (this file, an ADR, a `README.md` wording pass). One bump can carry several changes, so a skill can sit unbumped for a while — but "released" means the number moved, and until it does the change reaches nobody. Why a Claude plugin but not (yet) a Codex one lives in [.agents/adr/0002-ship-as-a-claude-code-plugin.md](./.agents/adr/0002-ship-as-a-claude-code-plugin.md).
 
 Each skill entry in the top-level `README.md` must link the skill name to its `SKILL.md`.
 

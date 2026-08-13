@@ -17,6 +17,7 @@ Reachable only when you type them (Claude Code: `disable-model-invocation: true`
 - **[present-analysis](./present-analysis/SKILL.md)** — Turn a finished analysis into a layered stakeholder report: takeaways anchored on the stakeholder question, every takeaway backed by a chart.
 - **[shap-report](./shap-report/SKILL.md)** — Build the SHAP side-by-side HTML report for the current repo's published model roster: mean|SHAP| share % by feature × target, computed on one hash-verified shared holdout sample.
 - **[wayfinder](./wayfinder/SKILL.md)** — Plan a huge chunk of work — more than one agent session can hold — as a shared map of decision tickets on the issue tracker, resolved one at a time until the way to the destination is clear.
+- **[consolidating-work](./consolidating-work/SKILL.md)** — Pull a sprawl of parallel worktrees and branches back to a reviewable state: secure every uncommitted change first, reap the branches a descendant already contains, then settle each surviving tip as a PR to `main`.
 
 ## Model-invoked
 
@@ -30,6 +31,6 @@ Model- or user-reachable (rich trigger phrasing so the model can reach for them)
 - **[tdd](./tdd/SKILL.md)** — Test-driven development with a red-green-refactor loop. Builds features or fixes bugs one vertical slice at a time.
 - **[domain-modeling](./domain-modeling/SKILL.md)** — Actively build and sharpen a project's domain model — challenge terms, stress-test with scenarios, update `CONTEXT.md` and ADRs inline.
 - **[codebase-design](./codebase-design/SKILL.md)** — Shared discipline and vocabulary for designing deep modules: small interfaces, clean seams, testable through the interface.
-- **[code-review](./code-review/SKILL.md)** — Two-axis review of the diff since a fixed point: **Standards** (repo standards, plus a Fowler smell baseline and a data baseline covering unbounded scans, unenforced grain, non-idempotent writes and leakage) and **Spec** (does it faithfully implement the originating issue?), run as parallel sub-agents.
+- **[code-review](./code-review/SKILL.md)** — Two-axis review of the diff since a fixed point: **Standards** (repo standards, plus a baseline chosen from what the diff is made of — Fowler smells and data failure modes for code, `writing-great-skills`'s failure modes for skill markdown) and **Spec** (does it faithfully implement the originating issue?), run as parallel sub-agents.
 - **[resolving-merge-conflicts](./resolving-merge-conflicts/SKILL.md)** — Work through an in-progress git merge or rebase conflict hunk by hunk, resolving by intent traced to each side's primary source, then finish the operation — never `--abort`.
 - **[cloud-run-to-repo](./cloud-run-to-repo/SKILL.md)** — Recover an ad-hoc-deployed Cloud Run service into a git repo — uv-managed, with a repeatable `deploy.sh` that mirrors every live runtime flag.
