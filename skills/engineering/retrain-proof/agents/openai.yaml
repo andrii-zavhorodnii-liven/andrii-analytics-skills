@@ -1,0 +1,3 @@
+interface:
+  display_name: "Retrain-proof"
+  short_description: "Persist model + scored rows on every training run"
