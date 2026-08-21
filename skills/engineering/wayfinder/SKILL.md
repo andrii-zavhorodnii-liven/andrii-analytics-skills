@@ -39,7 +39,7 @@ The whole map at low resolution, loaded once per session. Open tickets are **not
 
 ## Decisions so far
 
-<!-- the index — one line per closed ticket: enough to judge relevance, then zoom the link for the detail the ticket holds -->
+<!-- the index — one line per resolved ticket: enough to judge relevance, then zoom the link for the detail the ticket holds. A judgment awaiting the human's ratification carries a *(pending verdict)* suffix until they close its ticket -->
 
 - [<closed ticket title>](link) — <one-line gist of the answer>
 
@@ -66,7 +66,7 @@ Each ticket carries a `wayfinder:<type>` label — one of `research`, `prototype
 
 A session **claims** a ticket by assigning it to the dev driving the map, **first**, before any work, so concurrent sessions skip it. That assignee _is_ the claim: an open, unassigned ticket is unclaimed.
 
-Blocking uses the tracker's **native** dependency relationship — essential because it renders the frontier _visually_ in the tracker's own UI, so the human sees what's takeable without opening the map. Only a tracker that lacks native blocking falls back to a body convention. A ticket is **unblocked** when every ticket blocking it is closed; the **frontier** is the open, unblocked, unclaimed children — the edge of the known.
+Blocking uses the tracker's **native** dependency relationship — essential because it renders the frontier _visually_ in the tracker's own UI, so the human sees what's takeable without opening the map. Only a tracker that lacks native blocking falls back to a body convention. A ticket is **unblocked** when every ticket blocking it is closed; the **frontier** is the open, unblocked, unclaimed children — the edge of the known. A resolved-but-pending-verdict blocker (see "Record the resolution") deliberately keeps its children blocked: nothing builds on an unratified ruling.
 
 The answer isn't part of the body — it's recorded on resolution (see [Work through the map](#work-through-the-map)). Assets created while resolving a ticket are linked from the issue, not pasted in.
 
@@ -127,7 +127,10 @@ User invokes with a map (URL or number). A ticket is **optional** — without on
 1. Load the **map** — the low-res view, not every ticket body.
 2. Choose the ticket. If the user named one, use it. Otherwise take the first frontier ticket in order. **Claim it**: assign it to yourself before any work.
 3. Resolve it — **zoom as needed**: fetch the full body of any related or closed ticket on demand; invoke the skills the `## Notes` block names. If in doubt, use `/grilling` and `/domain-modeling`.
-4. Record the resolution: post the answer as a **resolution comment**, **close** the issue, and **append a context pointer** to the map's Decisions-so-far.
+4. Record the resolution: post the answer as a **resolution comment** and **append a context pointer** to the map's Decisions-so-far. Whether the agent also **closes** the ticket depends on what kind of answer it is:
+   - **Verifiable fact** (typical of research-docs / research-data questions: the answer can be checked against the source, and a wrong answer would be caught by re-running the query): close it.
+   - **Judgment or ruling** (a recommendation, trade-off call, method choice, or anything later work builds on — the kind of answer that earns a Decisions-so-far line the human should ratify): **leave it open and assigned**, start the resolution comment with **`Pending verdict:`**, and suffix its Decisions-so-far line with *(pending verdict)*. Only the human closes it; their close is the ratification. If they instead overturn it, the resolution comment and map line get corrected by the next session.
+   When unsure which kind it is, treat it as judgment. An open assigned ticket whose latest comment starts with `Pending verdict:` is resolved-awaiting-ratification — do not re-claim or redo it.
 5. Add newly-surfaced tickets (create-then-wire); graduate any fog the answer has made specifiable, clearing each graduated patch from **Not yet specified** so it lives only as its new ticket. If the answer reveals a ticket — this one or another — sits beyond the destination, **rule it out of scope** rather than resolving it on the route. If the decision invalidates other parts of the map, update or delete those tickets.
 
 The user may run unblocked tickets in parallel, so expect other sessions to be editing the tracker concurrently.
