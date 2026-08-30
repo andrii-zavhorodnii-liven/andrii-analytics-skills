@@ -11,7 +11,7 @@ A prototype is **throwaway code that answers a question**. The question decides 
 
 Identify which question is being answered — from the user's prompt, the surrounding code, or by asking if the user is around:
 
-- **"Does this logic / state model feel right?"** → [LOGIC.md](LOGIC.md). Build a tiny interactive terminal app that pushes the model through cases that are hard to reason about on paper.
+- **"Does this logic / state model feel right?"** → [LOGIC.md](LOGIC.md). Build a tiny interactive app that pushes the model through cases that are hard to reason about on paper — a terminal TUI by default, or a single shareable HTML file when a non-developer needs to drive it.
 - **"What should the output actually look like?"** → [SHAPE.md](SHAPE.md). Produce a small, real, concrete result set — a query result, a metric over a few days, a feature table's first twenty rows — for the user to react to.
 
 The two branches produce very different artifacts — getting this wrong wastes the whole prototype. If the question is genuinely ambiguous and the user isn't reachable, default by what's being prototyped: a scheduler, a retry policy, a state machine, an ingestion cursor → logic; a table, a metric, a report, a feature set → shape. State the assumption at the top of the prototype.

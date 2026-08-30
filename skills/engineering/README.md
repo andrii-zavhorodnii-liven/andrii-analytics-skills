@@ -23,7 +23,7 @@ Reachable only when you type them (Claude Code: `disable-model-invocation: true`
 
 Model- or user-reachable (rich trigger phrasing so the model can reach for them).
 
-- **[prototype](./prototype/SKILL.md)** — Build a throwaway prototype to answer a design question: a runnable terminal app for logic and state, or a small real result set when the question is what the output should look like.
+- **[prototype](./prototype/SKILL.md)** — Build a throwaway prototype to answer a design question: an interactive app for logic and state (terminal TUI, or a shareable HTML file for non-developers), or a small real result set when the question is what the output should look like.
 - **[diagnosing-bugs](./diagnosing-bugs/SKILL.md)** — Disciplined diagnosis loop for hard bugs and performance regressions: reproduce → minimise → hypothesise → instrument → fix → regression-test.
 - **[research-docs](./research-docs/SKILL.md)** — Answer a factual question about a tool, library or API from its primary sources, pinned to a version, as a cited Markdown file. Run as a background agent.
 - **[research-data](./research-data/SKILL.md)** — Profile the real data before building on it — grain, nulls, cardinality, volume, freshness, joinability — and capture the numbers with the queries that produced them.
