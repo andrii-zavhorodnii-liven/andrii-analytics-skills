@@ -1,6 +1,11 @@
 # Logic Prototype
 
-A tiny interactive terminal app that lets the user drive a state model by hand. Use this when the question is about **logic, state transitions, or sequencing** — the kind of thing that looks reasonable on paper but only feels wrong once you push it through real cases.
+A tiny interactive app that lets someone drive a state model by hand. Use this when the question is about **logic, state transitions, or sequencing** — the kind of thing that looks reasonable on paper but only feels wrong once you push it through real cases.
+
+Two shells, chosen by **who drives it**:
+
+- **Terminal TUI (default)** — the user is a developer at this repo. Python under `uv`, logic module portable into the real codebase.
+- **Shareable HTML file** — a non-developer (a PM, an analyst, a domain expert) needs to feel the model for themselves. One self-contained file, opens by double-click, buttons instead of keystrokes. See [Shareable HTML variant](#shareable-html-variant).
 
 ## When this is the right shape
 
@@ -8,7 +13,7 @@ A tiny interactive terminal app that lets the user drive a state model by hand. 
 - "Does this backfill state machine cope with a partition being reprocessed twice?"
 - "What should the retry / dead-letter policy actually do when the source API rate-limits mid-page?"
 - "Does this slowly-changing-dimension model let me represent a record that changes twice in one day?"
-- Anything where the user wants to **press keys and watch state change**.
+- Anything where someone wants to **press keys (or buttons) and watch state change**.
 
 If the question is "what should the output look like" — wrong branch. Use [SHAPE.md](SHAPE.md).
 
@@ -70,6 +75,15 @@ Give the user the run command. They'll drive it themselves; the interesting mome
 ### 7. Capture the answer and the prototype
 
 Once the prototype has answered its question, capture the answer, then capture the prototype the way the [SKILL](SKILL.md) describes. The logic-specific mapping: the validated reducer / machine / function set lifts into the real module (the decision, absorbed); the TUI shell rides along to the throwaway branch that keeps the prototype as a primary source.
+
+## Shareable HTML variant
+
+When the person who needs to drive the model is not a developer, swap the shell — nothing else. Same process: state the question at the top (in a visible intro on the page, not just a comment), isolate the logic, expose the state, hand it over.
+
+- **One file, plain HTML/CSS/JS.** No framework, no bundler, no server, everything inline, so it opens by double-click and survives being emailed or dropped in Slack. Anyone can run it.
+- **Buttons, not keystrokes.** One button per action (`arrive batch`, `late event`, `replay partition`, `tick clock`), current state rendered above them after every click. Speak the reader's language, not the code's: "a payment arrived twice", not `DUPLICATE_EVENT`.
+- **The logic still lives in one pure block.** Keep it in a single `<script>` section as a pure reducer / state machine / function set, with the page wiring kept separate — the question being answered should be readable in one place.
+- **The Python module stays the source of truth.** The JS is a translation for feel, throwaway like the page around it. When the prototype settles the question, lift the decision into the real Python module (write it from the validated model if it doesn't exist yet); never treat the JS as the artifact to keep.
 
 ## Anti-patterns
 

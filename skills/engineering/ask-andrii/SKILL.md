@@ -23,7 +23,7 @@ The route most work travels. You have an idea and want it built.
    - **Yes** → **`/to-spec`** (turn the thread into a spec), then **`/to-tickets`** to split it into tracer-bullet tickets, each declaring its **blocking edges**. On GitHub the edges become native issue dependencies, so any ticket whose blockers are done can be grabbed — kick off **`/implement`** per ticket, **clearing context between each one**. On a local tracker that's one file per ticket under `.scratch/<feature>/issues/`, worked blockers-first by hand.
    - **No** → **`/implement`** right here, in the same context window.
 
-   Either way, **`/implement`** builds each issue by driving **`/tdd`** internally — one red-green slice at a time — then closes out by running **`/code-review`**, a two-axis review (Standards + Spec) of the diff, before committing. Reach for **`/tdd`** on its own when you just want to build a concrete behaviour test-first without a full spec, and **`/code-review`** on its own whenever you want to review a branch or PR against a fixed point — code, or a skill's own markdown, which it judges against **`/writing-great-skills`**.
+   Either way, **`/implement`** builds each issue by driving **`/tdd`** internally — one red-green slice at a time — then closes out by running **`/code-review`**, a two-axis review (Standards + Spec) of the diff, before committing. Reach for **`/tdd`** on its own when you just want to build a concrete behaviour test-first without a full spec, and **`/code-review`** on its own whenever you want to review a branch or PR against a fixed point — code, or a skill's own markdown, which it judges against **`/writing-for-agents`**.
 
 ### Context hygiene
 
@@ -62,15 +62,22 @@ Two model-invoked references that run *beneath* the other skills — each the si
 
 ## Crossing sessions
 
-- **`/handoff`** — when a thread is full or you need to branch off (e.g. into a `/prototype` session), this compacts the conversation into a markdown file. You don't continue in place — you **open a new session and reference that file** to carry the context across. It's the bridge between context windows, in either direction. Use it when you want a **fresh session** but need the **current conversation preserved**.
-- **`/compact`** (built-in) — stay in the **same conversation**, letting the earlier turns be summarized. Use it at **intentional breaks between phases**, when you don't mind losing the verbatim history. Don't compact mid-phase — the agent can lose its way. `/handoff` forks; `/compact` continues.
+At every **phase boundary** — grilling done, implementation done, QA done — you pick one of five moves:
+
+- **Continue** — stay put. Costs nothing, loses nothing.
+- **`/clear`** (built-in) — empty the window, when nothing here matters to what's next.
+- **`/handoff`** — writes a portable markdown file. Narrow: only for a **new harness**, a **new directory**, a **colleague**, or forking a side task **mid-phase** (e.g. into a `/prototype` session). What it buys is portability.
+- **Subagent** — send a tightly-scoped task to its own window and get a report back.
+- **`/compact`** (built-in) — compresses this context and seeds a fresh session with it. The **default**, at the bottom of the tree rather than the first reach.
+
+Read [PHASE-BOUNDARIES.md](PHASE-BOUNDARIES.md) for the ordered tree: the five questions, the reasoning behind each branch, and why the primary-source cost makes **Continue** the one to rule out first. Make the decision **at** a boundary; mid-phase, continue or split the rest into subagents.
 
 ## Standalone
 
 Off the main flow entirely.
 
 - **`/grill-me`** — the same relentless interview as `/grill-with-docs`, but for when you have **no codebase**. Stateless: it saves nothing locally, builds no `CONTEXT.md`. Reach for it to sharpen any plan or design that doesn't live in a repo.
-- **`/prototype`** — a small, throwaway artifact that answers one design question. Two shapes: **logic**, a terminal app you drive by hand when the question is about sequencing or state, and **shape**, a small real result set when the question is what the output should look like. Throwaway from day one — keep the answer, delete the code. It's the detour in step 2 of the main flow, but reach for it any time a design question is hard to settle on paper. Twenty real rows end an argument prose can circle for an hour.
+- **`/prototype`** — a small, throwaway artifact that answers one design question. Two shapes: **logic**, an interactive app you drive by hand when the question is about sequencing or state (a terminal TUI, or a shareable HTML file for non-developers), and **shape**, a small real result set when the question is what the output should look like. Throwaway from day one — keep the answer, delete the code. It's the detour in step 2 of the main flow, but reach for it any time a design question is hard to settle on paper. Twenty real rows end an argument prose can circle for an hour.
 - **The three research skills** — delegate reading and profiling legwork to a **background agent**, and keep working while it runs. Each leaves a findings file to take *into* the main flow at `/grill-with-docs`; research feeds the thinking, it doesn't replace it. Pick by what kind of question you have:
   - **`/research-docs`** — a fact about a **tool**. Does Dataform support this? What's the quota? What does the SDK actually do? Answered from primary sources, pinned to a version.
   - **`/research-data`** — a fact about **our data**. What's the grain? How null is this column? Do these two tables join? Answered in numbers, with the queries attached. Reach for this one first when a plan rests on an assumption nobody has checked — it's the cheapest way to find out you were about to build the wrong thing.
@@ -83,7 +90,8 @@ Off the main flow entirely.
 - **`/retrain-proof`** — the persistence discipline for any script that trains a model, sweep cells included: scored evaluation rows, the model file, and the population definition saved next to the metrics, so follow-up metrics never force a refit. Model-invoked before the first fit call; scratchpad probes follow the same rule.
 - **`/pr-merged`** — the tidy-up after a PR lands: fetch with prune, return to the default branch and pull the merge, delete every local branch whose remote is gone (worktrees included). It never touches remote branches or uncommitted work. For one merged PR; a pile-up of parallel worktrees is `/consolidating-work`'s job.
 - **`/teach`** — learn a concept over multiple sessions, using the current directory as a stateful workspace.
-- **`/writing-great-skills`** — reference for writing and editing skills well.
+- **`/wait-what`** — when the agent's last message didn't land, stop and have it re-pitched: context first, plain language, the project's own terms.
+- **`/writing-for-agents`** — reference for writing any document an agent consumes: skills, `AGENTS.md`/`CLAUDE.md`, docs reached by pointers.
 
 ## Conventions underneath
 

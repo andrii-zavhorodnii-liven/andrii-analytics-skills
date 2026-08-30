@@ -40,7 +40,7 @@ Anything in the repo that documents how its contents should be written, such as 
 On top of whatever the repo documents, the Standards axis carries a **baseline** — the failure modes that apply even when a repo documents nothing. Which baseline applies follows each changed file, so a diff holding both kinds carries both baselines — each file judged against its own:
 
 - **Code** → read [`code-baselines.md`](code-baselines.md): the Fowler smell baseline and the data baseline, plus the two rules that bind them.
-- **Skill markdown** — `SKILL.md` files and their sibling reference files, under a project's `.claude/skills/` or in the skills repo itself → read `~/.claude/skills/writing-great-skills/SKILL.md` and its `GLOSSARY.md`. Its **Failure modes** list is this branch's baseline: premature completion, duplication, sediment, sprawl, no-op, negation. If that path doesn't resolve, find the repo root by resolving an installed skill's symlink (`readlink ~/.claude/skills/code-review`) and read `skills/productivity/writing-great-skills/` there. Judge prose against that skill and nothing else.
+- **Skill markdown** — `SKILL.md` files and their sibling reference files, under a project's `.claude/skills/` or in the skills repo itself → read `~/.claude/skills/writing-for-agents/SKILL.md` and its `SKILL-MECHANICS.md`. Its failure modes are this branch's baseline: premature completion, duplication, sediment, sprawl, no-op, negation. If that path doesn't resolve, find the repo root by resolving an installed skill's symlink (`readlink ~/.claude/skills/code-review`) and read `skills/productivity/writing-for-agents/` there. Judge prose against that skill and nothing else.
 
 ### 4. Spawn both sub-agents in parallel
 

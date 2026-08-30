@@ -1,6 +1,6 @@
 # Code baselines
 
-The two baselines the Standards axis carries on the **code branch** of `SKILL.md` step 3. Neither applies to skill markdown — that branch reaches for `writing-great-skills` instead.
+The two baselines the Standards axis carries on the **code branch** of `SKILL.md` step 3. Neither applies to skill markdown — that branch reaches for `writing-for-agents` instead.
 
 Two rules bind both:
 

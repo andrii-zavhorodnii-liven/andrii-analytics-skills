@@ -147,10 +147,10 @@ Daily data, analytics and platform work.
 - **[research-docs](./skills/engineering/research-docs/SKILL.md)** — Answer a factual question about a tool, library or API from its primary sources, pinned to a version. Run as a background agent.
 - **[research-data](./skills/engineering/research-data/SKILL.md)** — Profile the real data before building on it — grain, nulls, cardinality, volume, freshness, joinability — and capture the numbers with the queries that produced them.
 - **[research-web](./skills/engineering/research-web/SKILL.md)** — Survey how a problem is usually solved and come back with a shortlist and one recommendation for our constraints.
-- **[prototype](./skills/engineering/prototype/SKILL.md)** — Build a throwaway prototype to answer a design question: a runnable terminal app for logic and state, or a small real result set when the question is what the output should look like.
+- **[prototype](./skills/engineering/prototype/SKILL.md)** — Build a throwaway prototype to answer a design question: an interactive app for logic and state (terminal TUI, or a shareable HTML file for non-developers), or a small real result set when the question is what the output should look like.
 - **[tdd](./skills/engineering/tdd/SKILL.md)** — Test-driven development with a red-green-refactor loop, one vertical slice at a time. Splits duties between `pytest` and Dataform assertions.
 - **[diagnosing-bugs](./skills/engineering/diagnosing-bugs/SKILL.md)** — Disciplined diagnosis loop for hard bugs and performance regressions: reproduce → minimise → hypothesise → instrument → fix → regression-test.
-- **[code-review](./skills/engineering/code-review/SKILL.md)** — Two-axis review of the diff since a fixed point: **Standards** (repo standards, plus a baseline chosen from what the diff is made of — Fowler smells and data failure modes for code, `writing-great-skills`'s failure modes for skill markdown) and **Spec** (does it faithfully implement the originating issue?), run as parallel sub-agents.
+- **[code-review](./skills/engineering/code-review/SKILL.md)** — Two-axis review of the diff since a fixed point: **Standards** (repo standards, plus a baseline chosen from what the diff is made of — Fowler smells and data failure modes for code, `writing-for-agents`'s failure modes for skill markdown) and **Spec** (does it faithfully implement the originating issue?), run as parallel sub-agents.
 - **[domain-modeling](./skills/engineering/domain-modeling/SKILL.md)** — Actively build and sharpen a project's domain model — challenge terms, pin down grain and which timestamp a word means, update `CONTEXT.md` and ADRs inline.
 - **[codebase-design](./skills/engineering/codebase-design/SKILL.md)** — Shared discipline and vocabulary for designing deep modules: a lot of behaviour behind a small interface, placed at a clean seam, testable through that interface.
 - **[resolving-merge-conflicts](./skills/engineering/resolving-merge-conflicts/SKILL.md)** — Work through an in-progress git merge or rebase conflict hunk by hunk, resolving by intent traced to each side's primary source, then finish the operation — never `--abort`.
@@ -167,11 +167,12 @@ General workflow tools, not code-specific.
 - **[handoff](./skills/productivity/handoff/SKILL.md)** — Compact the current conversation into a handoff document so another agent can continue the work.
 - **[pr-merged](./skills/productivity/pr-merged/SKILL.md)** — After a PR merges, sync the default branch and delete the merged local branches.
 - **[teach](./skills/productivity/teach/SKILL.md)** — Teach the user a new skill or concept over multiple sessions, using the current directory as a stateful teaching workspace.
-- **[writing-great-skills](./skills/productivity/writing-great-skills/SKILL.md)** — Reference for writing and editing skills well: the vocabulary and principles that make a skill predictable.
+- **[wait-what](./skills/productivity/wait-what/SKILL.md)** — Stop and re-pitch the last message in plain language when it didn't land.
 
 **Model-invoked**
 
-- **[grilling](./skills/productivity/grilling/SKILL.md)** — Interview the user relentlessly about a plan, decision, or idea until every branch of the decision tree is resolved. The reusable loop behind `grill-me` and `grill-with-docs`.
+- **[grilling](./skills/productivity/grilling/SKILL.md)** — Interview the user relentlessly about a plan, decision, or idea, a round of frontier questions at a time, until every branch of the design tree is resolved. The reusable loop behind `grill-me` and `grill-with-docs`.
+- **[writing-for-agents](./skills/productivity/writing-for-agents/SKILL.md)** — Reference for writing any document an agent consumes — skills, `AGENTS.md`/`CLAUDE.md`, docs reached by pointers: the levers that make each one predictable.
 
 ## Credits
 
