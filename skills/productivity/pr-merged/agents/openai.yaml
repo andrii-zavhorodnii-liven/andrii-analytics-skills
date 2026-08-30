@@ -1,0 +1,5 @@
+interface:
+  display_name: "PR merged"
+  short_description: "Sync default branch, delete merged local branches"
+policy:
+  allow_implicit_invocation: false
