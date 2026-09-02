@@ -8,11 +8,15 @@ The user just merged a PR (and typically deleted its remote branch). Bring the l
 repo back to a clean baseline while every other session keeps working.
 
 A worktree is **live** when another session may be using it: a parallel agent, a Codex
-checkout, a scratchpad the user still has open. A live worktree stays exactly as it is;
-the step prints it as **HELD** with a reason and moves on. This worktree is **idle** only
-when `git status --porcelain` prints nothing **and** `HEAD` still equals the value
-recorded in step 1 — a clean tree whose `HEAD` moved is live. Every other worktree is
-live by definition: a clean tree says nothing about the session sitting in it.
+checkout, a scratchpad the user still has open. This worktree is **idle** only when
+this test passes — a clean tree whose `HEAD` moved is live:
+
+```bash
+[ -z "$(git status --porcelain)" ] && [ "$(git rev-parse HEAD)" = "$start" ]
+```
+ Every other worktree is live by definition: a clean tree
+says nothing about the session sitting in it. Whatever a step would touch in a live
+worktree it prints as **HELD** with a reason and moves on.
 
 1. **Record, then prune.** Capture the state the later steps compare against, then
    prune so a just-deleted remote branch shows as `[gone]`:
@@ -24,10 +28,10 @@ live by definition: a clean tree says nothing about the session sitting in it.
    git fetch --prune
    ```
 
-   Done when `git branch -v` lists the merged branch as `[gone]`.
+   Done when `git branch -v` lists the merged branch as `[gone]`, or the branch still
+   tracks a live remote — then it is simply out of scope, and you proceed.
 
-2. **Sync `$default` without disturbing anyone.** The ref moves; a working tree moves
-   only when idle.
+2. **Sync `$default`.** The ref moves; a working tree moves only when idle.
 
    - On `$default` and idle: `git pull --ff-only`.
    - On `$default` and live: print HELD. Git refuses to fetch into a checked-out
@@ -38,7 +42,8 @@ live by definition: a clean tree says nothing about the session sitting in it.
      print HELD.
 
    Done when `git rev-parse $default` equals `git rev-parse origin/$default`, or the
-   HELD line explains why it does not.
+   HELD line explains why it does not. A HELD `$default` is stale, so step 3 will report
+   the just-merged branch as not contained — say so in the report.
 
 3. **Delete every `[gone]` branch whose commits are contained in `$default`:**
 
@@ -56,13 +61,11 @@ live by definition: a clean tree says nothing about the session sitting in it.
    done
    ```
 
-   Two gates carry the safety. A branch checked out in any worktree is HELD: removing
-   the worktree is the user's call, and `git worktree remove <path>` is the one command
-   they need. `--is-ancestor` proves `$default` holds the commits before `-D` drops the
-   name; `[gone]` alone only says the remote was deleted. A squash or rebase merge fails the
-   ancestor test even though its content landed, so it surfaces HELD: run
+   `[gone]` alone only says the remote was deleted, hence the containment gate. A squash
+   or rebase merge fails it even though its content landed, so it surfaces HELD: run
    `git cherry -v $default $branch`, and a branch showing `-` on every commit is already
-   upstream and safe for the user to delete by hand.
+   upstream and safe for the user to delete by hand. A HELD worktree is likewise the
+   user's call: `git worktree remove <path>`.
 
    Done when every `[gone]` branch is either deleted or printed as HELD.
 
