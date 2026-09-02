@@ -5,30 +5,73 @@ disable-model-invocation: true
 ---
 
 The user just merged a PR (and typically deleted its remote branch). Bring the local
-repo back to a clean baseline:
+repo back to a clean baseline while every other session keeps working.
 
-1. **Prune first**: `git fetch --prune` — without it a just-deleted remote branch does
-   not yet show as `[gone]` locally.
-2. **Return to the default branch and pull the merge**: detect it with
-   `git symbolic-ref refs/remotes/origin/HEAD --short` (strip the `origin/` prefix;
-   fall back to `main`), then `git checkout <default> && git pull`. If the working
-   tree has uncommitted changes that block the checkout, stop and tell the user —
-   never stash or discard on their behalf.
-3. **Delete every local branch marked `[gone]`**, removing an associated worktree
-   first when one exists:
+A worktree is **live** when another session may be using it: a parallel agent, a Codex
+checkout, a scratchpad the user still has open. This worktree is **idle** only when
+this test passes — a clean tree whose `HEAD` moved is live:
+
+```bash
+[ -z "$(git status --porcelain)" ] && [ "$(git rev-parse HEAD)" = "$start" ]
+```
+
+Every other worktree is live by definition: a clean tree says nothing about the session
+sitting in it. Whatever a step would touch in a live worktree it prints as **HELD** with
+a reason and moves on.
+
+1. **Record, then prune.** Capture the state the later steps compare against, then
+   prune so a just-deleted remote branch shows as `[gone]`:
+
+   ```bash
+   start=$(git rev-parse HEAD)
+   default=$(git symbolic-ref refs/remotes/origin/HEAD --short 2>/dev/null | sed 's|^origin/||')
+   default=${default:-main}
+   git fetch --prune
+   ```
+
+   Done when `git branch -v` lists the merged branch as `[gone]`, or the branch still
+   tracks a live remote — then it is simply out of scope, and you proceed.
+
+2. **Sync `$default`.** The ref moves; a working tree moves only when idle.
+
+   - On `$default` and idle: `git pull --ff-only`.
+   - On `$default` and live: print HELD. Git refuses to fetch into a checked-out
+     branch, so the ref waits for the user.
+   - On any other branch: `git fetch . origin/$default:$default` fast-forwards the ref
+     with no working-tree effect and refuses anything but a fast-forward. Then
+     `git checkout $default` if this worktree is idle; if live, stay where you are and
+     print HELD.
+
+   Done when `git rev-parse $default` equals `git rev-parse origin/$default`, or the
+   HELD line explains why it does not. A HELD `$default` is stale, so step 3 will report
+   the just-merged branch as not contained — say so in the report.
+
+3. **Delete every `[gone]` branch whose commits are contained in `$default`:**
 
    ```bash
    git branch -v | grep '\[gone\]' | sed 's/^[+* ]//' | awk '{print $1}' | while read branch; do
      worktree=$(git worktree list | grep "\\[$branch\\]" | awk '{print $1}')
-     if [ -n "$worktree" ] && [ "$worktree" != "$(git rev-parse --show-toplevel)" ]; then
-       git worktree remove --force "$worktree"
+     if [ -n "$worktree" ]; then
+       echo "HELD $branch — checked out in worktree $worktree"; continue
      fi
-     git branch -D "$branch"
+     if git merge-base --is-ancestor "$branch" "$default"; then
+       git branch -D "$branch"
+     else
+       echo "HELD $branch — not contained in $default"
+     fi
    done
    ```
 
-4. **Report** in one or two sentences: what the default branch pulled in, and which
-   branches/worktrees were deleted. If nothing was `[gone]`, say so plainly.
+   `[gone]` alone only says the remote was deleted, hence the containment gate. A squash
+   or rebase merge fails it even though its content landed, so it surfaces HELD: run
+   `git cherry -v $default $branch`, and a branch showing `-` on every commit is already
+   upstream and safe for the user to delete by hand. A HELD worktree is likewise the
+   user's call: `git worktree remove <path>`.
 
-Scope guard: this skill only deletes local branches whose remote is gone. It never
-deletes remote branches, never force-pushes, and never touches uncommitted work.
+   Done when every `[gone]` branch is either deleted or printed as HELD.
+
+4. **Report**: what `$default` gained, which branches were deleted, and each HELD line
+   with its reason. Nothing `[gone]`: say so plainly.
+
+Scope: local branches whose remote is gone and whose commits live on in `$default`.
+Remote branches, uncommitted work, and every worktree stay exactly as they are.
