@@ -14,9 +14,10 @@ this test passes — a clean tree whose `HEAD` moved is live:
 ```bash
 [ -z "$(git status --porcelain)" ] && [ "$(git rev-parse HEAD)" = "$start" ]
 ```
- Every other worktree is live by definition: a clean tree
-says nothing about the session sitting in it. Whatever a step would touch in a live
-worktree it prints as **HELD** with a reason and moves on.
+
+Every other worktree is live by definition: a clean tree says nothing about the session
+sitting in it. Whatever a step would touch in a live worktree it prints as **HELD** with
+a reason and moves on.
 
 1. **Record, then prune.** Capture the state the later steps compare against, then
    prune so a just-deleted remote branch shows as `[gone]`:
