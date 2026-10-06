@@ -1,7 +1,6 @@
 ---
 name: feasibility-check
-description: Pressure-test whether a proposed change is feasible, and at what cost, before you commit or promise an estimate — trace the real system, tag each piece have/build/can't/unknown, return one verdict.
-disable-model-invocation: true
+description: Pressure-test whether a proposed change to a data or analytics system is feasible, and at what cost, before anyone commits or promises an estimate — trace the real system, tag each piece have/build/can't/unknown, return one verdict. Use when the user asks "is this doable?", "how long would this take?", "can we add X to this pipeline/model/dashboard?", needs an estimate for a stakeholder ask, or is about to promise a timeline.
 ---
 
 You assess whether a proposed change to a data or analytics system is feasible, and at what cost, **before anyone commits to building it or promises an estimate**.

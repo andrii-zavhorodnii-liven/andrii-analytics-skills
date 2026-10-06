@@ -139,9 +139,6 @@ Daily data, analytics and platform work.
 - **[retro](./skills/engineering/retro/SKILL.md)** — Look back at a coding session and suggest changes to the agent's environment, not the code: navigation pointers, automated checks, coding standards, steering files, data access.
 - **[improve-codebase-architecture](./skills/engineering/improve-codebase-architecture/SKILL.md)** — Scan a codebase for deepening opportunities, present them as a visual HTML report, then grill through whichever one you pick.
 - **[wayfinder](./skills/engineering/wayfinder/SKILL.md)** — Plan a huge chunk of work, more than one agent session can hold, as a shared map of decision tickets on the issue tracker — resolved one at a time until the way to the destination is clear.
-- **[feasibility-check](./skills/engineering/feasibility-check/SKILL.md)** — Pressure-test whether an ask is feasible, and at what cost, before promising an estimate: trace the real system, tag each piece have/build/can't/unknown, and return one verdict with the single check to run first. Verdicts route onward — feasible into the main flow, too-big-for-one-session into `/wayfinder`.
-- **[present-analysis](./skills/engineering/present-analysis/SKILL.md)** — Turn a finished analysis into a layered stakeholder report: takeaways anchored on the stakeholder question, every takeaway backed by a chart, recommendations in plain business language.
-- **[shap-report](./skills/engineering/shap-report/SKILL.md)** — Build the SHAP side-by-side HTML report for the current repo's published model roster: mean|SHAP| share % by feature × target, computed on one hash-verified shared holdout sample so columns are comparable across targets.
 - **[consolidating-work](./skills/engineering/consolidating-work/SKILL.md)** — Pull a sprawl of parallel worktrees and branches back to a reviewable state: secure every uncommitted change first, reap the branches a descendant already contains, then settle each surviving tip as a PR to `main`.
 
 **Model-invoked**
@@ -158,6 +155,9 @@ Daily data, analytics and platform work.
 - **[codebase-design](./skills/engineering/codebase-design/SKILL.md)** — Shared discipline and vocabulary for designing deep modules: a lot of behaviour behind a small interface, placed at a clean seam, testable through that interface.
 - **[retrain-proof](./skills/engineering/retrain-proof/SKILL.md)** — Make every training run retrain-proof: persist the scored evaluation rows, the model file, and the population definition next to the metrics output, so any follow-up metric is computable without a refit.
 - **[cloud-run-to-repo](./skills/engineering/cloud-run-to-repo/SKILL.md)** — Recover an ad-hoc-deployed Cloud Run service into a git repo — uv-managed, with a repeatable `deploy.sh` that mirrors every live runtime flag.
+- **[feasibility-check](./skills/engineering/feasibility-check/SKILL.md)** — Pressure-test whether an ask is feasible, and at what cost, before promising an estimate: trace the real system, tag each piece have/build/can't/unknown, and return one verdict with the single check to run first. Verdicts route onward — feasible into the main flow, too-big-for-one-session into `/wayfinder`.
+- **[present-analysis](./skills/engineering/present-analysis/SKILL.md)** — Turn a finished analysis into a layered stakeholder report: takeaways anchored on the stakeholder question, every takeaway backed by a chart, recommendations in plain business language.
+- **[shap-report](./skills/engineering/shap-report/SKILL.md)** — SHAP HTML report for the CatBoost model(s) published in the current repo — a roster of targets or a single model: mean|SHAP| share % by feature × model, on one hash-verified shared holdout sample. Fires only inside a repo that holds a `.cbm` model.
 
 ### Productivity
 
