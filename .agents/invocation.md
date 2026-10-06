@@ -13,7 +13,13 @@ Bucket `README.md`s and the top-level `README.md` group entries into **User-invo
 
 ## Dependencies between them
 
-Dependencies are expressed as **`/skill`-style prose invocation** ("Run the `/grilling` skill"), not deep `../other-skill/FILE.md` cross-references. Shared reference docs live inside the skill that owns them; other skills reach that material by invoking the skill, not by linking across folders.
+Dependencies are expressed as an explicit instruction to **call the Skill tool** with the named skill (`Call the Skill tool with "grilling"`), not deep `../other-skill/FILE.md` cross-references, and not a bare `/skill`-style mention left for the model to interpret. Naming the tool is what gets it fired: a `/name` dropped into prose often isn't read as a command, so the skill never loads. Shared reference docs live inside the skill that owns them; other skills reach that material by calling the Skill tool with it, not by linking across folders.
+
+This is about **operative** instructions — a skill's own steps telling the agent to go run another skill right now. Router prose that just names skills for a human to pick from (`ask-andrii`, bucket `README.md`s, a verdict that recommends the next skill) isn't invoking anything, so it keeps `/skill`-style names as plain labels.
+
+The Skill tool takes one skill per call. A step that needs two skills is two calls: say so (`Call the Skill tool twice, for "grilling" and "domain-modeling"`), not "call it with X and Y", which reads as one call taking both.
+
+The convention only holds when the named skill is **model-invoked**. A user-invoked skill can't be reached through the Skill tool by anything but the human, so when a step needs one, phrase it as an instruction for the human: "tell the user to run `/to-tickets`", never as a Skill tool call.
 
 One exception: a **user-invoked** skill can't be invoked by anything, so a skill needing its reference material passively — as a rulebook to judge against, not a process to run — reads it by path, naming the files. That keeps the owning skill the single source of truth instead of copying its rules into a second place.
 

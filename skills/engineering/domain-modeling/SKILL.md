@@ -64,7 +64,7 @@ When domain relationships are being discussed, stress-test them with specific sc
 
 When the user states how something works, check whether the code agrees. If you find a contradiction, surface it: "Your model is grouped by `customer_id` alone, but you just said a customer can hold several subscriptions — which is right?"
 
-For data work, the code includes the **data**. When a claim about the domain is checkable in the warehouse, check it rather than debating it — a `COUNT(*)` versus `COUNT(DISTINCT key)` settles a grain question in seconds. Reach for `/research-data` when the check is bigger than a one-liner. A glossary term contradicted by the rows is the most valuable contradiction you can find.
+For data work, the code includes the **data**. When a claim about the domain is checkable in the warehouse, check it rather than debating it — a `COUNT(*)` versus `COUNT(DISTINCT key)` settles a grain question in seconds. Call the Skill tool with "research-data" when the check is bigger than a one-liner. A glossary term contradicted by the rows is the most valuable contradiction you can find.
 
 ### Update CONTEXT.md inline
 

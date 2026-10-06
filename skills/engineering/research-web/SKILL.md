@@ -77,6 +77,6 @@ If any of these are unknown and would flip the recommendation, say which — don
 
 ## Hand off to the cheaper skill when you can
 
-The best outcome of a web survey is often "this hinges on a fact about our data" — at which point stop, and let `/research-data` settle it. Guessing at our own numbers from the internet is the failure mode this skill has to avoid.
+The best outcome of a web survey is often "this hinges on a fact about our data" — at which point stop, and call the Skill tool with "research-data" to settle it. Guessing at our own numbers from the internet is the failure mode this skill has to avoid.
 
 Link the findings file from the issue the question came from.

@@ -6,7 +6,7 @@ disable-model-invocation: true
 
 Implement the work described by the user in the spec or tickets.
 
-Use /tdd where possible, at pre-agreed seams.
+Call the Skill tool with "tdd" where possible, at pre-agreed seams.
 
 Run the fast checks regularly and the slow ones once at the end:
 
@@ -15,7 +15,7 @@ Run the fast checks regularly and the slow ones once at the end:
 
 Never run a pipeline against a production destination to check your work. Use a dev/scratch dataset or the repo's dev workspace. If a ticket can only be verified against production, stop and say so rather than doing it quietly.
 
-Once done, use /code-review to review the work.
+Once done, call the Skill tool with "code-review" to review the work.
 
 Commit your work to the current branch.
 

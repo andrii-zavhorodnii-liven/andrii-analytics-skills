@@ -74,14 +74,14 @@ The answer isn't part of the body — it's recorded on resolution (see [Work thr
 
 Every ticket is either **HITL** — human in the loop, worked *with* a human who speaks for themselves — or **AFK**, driven by the agent alone. A HITL ticket only resolves through that live exchange; the agent never stands in for the human's side of it (a grilling agent that answers its own questions has broken this).
 
-- **Research** (AFK): Surface a fact a decision waits on. Resolved by a **subagent** running whichever of the three research skills matches the question:
+- **Research** (AFK): Surface a fact a decision waits on. Resolved by a **subagent** that calls the Skill tool with whichever of the three research skills matches the question:
   - `/research-docs` — a fact about a tool, library, or API (does Dataform support this? what's the quota? what does the SDK actually do?)
   - `/research-data` — a fact about our own data (what's the grain? how null is this column? are these two tables joinable?)
   - `/research-web` — which approach to take (model family, orchestration option, prior art), ending in a recommendation
 
   Use when knowledge outside the current working directory is required. `/research-data` is the one that most often turns a foggy patch sharp — reach for it early when a decision rests on an assumption about the data nobody has checked.
-- **Prototype** (HITL): Raise the fidelity of the discussion by making a cheap, rough, concrete artifact to react to — an outline, a rough take, a throwaway query, or logic/shape code via the `/prototype` skill. Links the prototype as an asset. Use when "what should the output look like" or "how should it behave" is the key question. Twenty real rows settle an argument that prose can circle for an hour.
-- **Grilling** (HITL): Conversation via the /grilling and /domain-modeling skills, one question at a time. The default case.
+- **Prototype** (HITL): Raise the fidelity of the discussion by making a cheap, rough, concrete artifact to react to — an outline, a rough take, a throwaway query, or logic/shape code by calling the Skill tool with "prototype". Links the prototype as an asset. Use when "what should the output look like" or "how should it behave" is the key question. Twenty real rows settle an argument that prose can circle for an hour.
+- **Grilling** (HITL): Conversation, one question at a time. The default case. Always call the Skill tool twice, for "grilling" and "domain-modeling".
 - **Task** (HITL or AFK): Manual work that must happen before a *decision* can be made — nothing to decide, prototype, or research, but the discussion is blocked until it's done. Signing up for a service so its API can be judged, provisioning access, moving data so its shape can be seen. This is the one type that *does* rather than decides — and it earns its place by unblocking a decision, not by delivering the destination. The agent drives it alone where it can (AFK); otherwise it hands the human a precise checklist (HITL). Resolved when the work is done; the answer records what was done and any resulting facts (credentials location, new URLs, row counts) later tickets depend on.
 
 ## Fog of war
@@ -113,11 +113,11 @@ Two modes. Either way, **never resolve more than one ticket per session** — wi
 
 User invokes with a loose idea. A common arrival path is a `/feasibility-check` that came back "feasible, but too big or foggy for one session" — its ⚠ unknown rows are ready-made research tickets, and its trace seeds the Notes.
 
-1. **Name the destination.** Run a `/grilling` and `/domain-modeling` session to pin down what this map is finding its way to — the spec, decision, or change. The destination fixes the scope, so it's settled first.
+1. **Name the destination.** Call the Skill tool twice, for "grilling" and "domain-modeling", to pin down what this map is finding its way to — the spec, decision, or change. The destination fixes the scope, so it's settled first.
 2. **Map the frontier.** Grill again, **breadth-first** this time: fan out across the whole space rather than deep on any one thread, surfacing the open decisions and the first steps takeable now. **If this surfaces no fog** — the way to the destination is already clear, the whole journey small enough for one session — you don't need a map. Stop and ask the user how they'd like to proceed.
 3. **Create the map** (label `wayfinder:map`): Destination and Notes filled in, Decisions-so-far empty, the fog sketched into **Not yet specified**.
 4. **Create the tickets you can specify now** as child issues of the map — then wire blocking edges in a **second pass** (issues need ids before they can reference each other). Wiring sorts them into the frontier and the blocked; everything you can't yet specify stays in the fog — the **Not yet specified** section.
-5. **Fire the research subagents.** For each `research` ticket you just created, spin up a subagent running the matching research skill (`/research-docs`, `/research-data`, or `/research-web`) to resolve it in parallel, capturing its findings on a throwaway `research/<name>` branch with a context pointer from the ticket.
+5. **Fire the research subagents.** For each `research` ticket you just created, spin up a subagent that calls the Skill tool with the matching research skill ("research-docs", "research-data", or "research-web") to resolve it in parallel, capturing its findings on a throwaway `research/<name>` branch with a context pointer from the ticket.
 6. Stop — charting is one session's work; it hand-resolves nothing.
 
 ### Work through the map
@@ -126,7 +126,7 @@ User invokes with a map (URL or number). A ticket is **optional** — without on
 
 1. Load the **map** — the low-res view, not every ticket body.
 2. Choose the ticket. If the user named one, use it. Otherwise take the first frontier ticket in order. **Claim it**: assign it to yourself before any work.
-3. Resolve it — **zoom as needed**: fetch the full body of any related or closed ticket on demand; invoke the skills the `## Notes` block names. If in doubt, use `/grilling` and `/domain-modeling`.
+3. Resolve it — **zoom as needed**: fetch the full body of any related or closed ticket on demand; call the Skill tool for whichever skills the `## Notes` block names. If in doubt, call the Skill tool twice, for "grilling" and "domain-modeling".
 4. Record the resolution: post the answer as a **resolution comment** and **append a context pointer** to the map's Decisions-so-far. Whether the agent also **closes** the ticket depends on what kind of answer it is:
    - **Verifiable fact** (typical of research-docs / research-data questions: the answer can be checked against the source, and a wrong answer would be caught by re-running the query): close it.
    - **Judgment or ruling** (a recommendation, trade-off call, method choice, or anything later work builds on — the kind of answer that earns a Decisions-so-far line the human should ratify): **leave it open and assigned**, start the resolution comment with **`Pending verdict:`**, and suffix its Decisions-so-far line with *(pending verdict)*. Only the human closes it; their close is the ratification. If they instead overturn it, the resolution comment and map line get corrected by the next session.
