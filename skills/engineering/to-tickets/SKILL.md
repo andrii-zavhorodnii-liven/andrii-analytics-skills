@@ -60,7 +60,7 @@ Iterate until the user approves the breakdown.
 Publish the approved tickets. **How** depends on the tracker the convention resolves to — the tickets are the same either way, only the shape of the blocking edges changes:
 
 - **Local files** → write one file per ticket under `.scratch/<feature-slug>/issues/<NN>-<slug>.md`, numbered from `01` in dependency order (blockers first). Each file's "Blocked by" lists the numbers/titles it depends on. Use the per-ticket file template below — one ticket per file, never a single combined file.
-- **GitHub Issues** (the default) → publish one issue per ticket in dependency order (blockers first) so each ticket's blocking edges can reference real issue numbers. Use GitHub's native issue dependencies for the blocking edges; where they aren't available, set each ticket's "Blocked by" to the blocking issues. Apply the `ready-for-agent` triage label unless instructed otherwise — the tickets are agent-grabbable by construction.
+- **GitHub Issues** (the default) → publish one issue per ticket in dependency order (blockers first) so each ticket's blocking edges can reference real issue numbers. Use GitHub's native issue dependencies for the blocking edges; where they aren't available, set each ticket's "Blocked by" to the blocking issues. If the source was an existing issue, make each ticket its sub-issue (`gh issue create --parent <n>`, or `gh issue edit <n> --add-sub-issue <child>`; without sub-issues, `Part of #<n>` at the top of the body). Apply the `ready-for-agent` triage label unless instructed otherwise — the tickets are agent-grabbable by construction.
 
 Work the **frontier**: any ticket whose blockers are all done. For a purely linear chain that means top to bottom.
 
@@ -98,7 +98,7 @@ The end-to-end behaviour this ticket makes work, from the user's perspective —
 
 ## Blocked by
 
-- A reference to each blocking ticket, or "None — can start immediately".
+- A reference to each blocking ticket, or "None — can start immediately". Omit this section when blockers were set as native dependencies.
 
 </issue-template>
 

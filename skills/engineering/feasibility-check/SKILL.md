@@ -35,7 +35,7 @@ Then:
 
 1. **Restate the goal** in one or two sentences, plus the concrete change it implies. Read the request and project context (CLAUDE.md / README / CONTEXT.md) just enough to phrase it in the system's own terms.
 2. **Read the system silently — only to find what to ask.** Skim the code the change would touch, but do not report what you find and do not pre-judge feasibility. You are reading now to discover the *business* questions the code cannot answer, not to start the assessment.
-3. **Ask only what the code cannot tell you** — one question at a time, in the discipline of the `/grilling` skill. These are almost always intent or business constraints:
+3. **Ask only what the code cannot tell you** — one question at a time, in the discipline you get by calling the Skill tool with "grilling". These are almost always intent or business constraints:
    - **The real need behind the ask** — the decision it serves. The literal ask often has a cheaper version that meets it.
    - **Reconciliation** — must the output tie to an official number, a finance figure, an existing report?
    - **Constraints** — deadline, who maintains it after, what must not break.

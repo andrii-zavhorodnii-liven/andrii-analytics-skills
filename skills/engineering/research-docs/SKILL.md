@@ -19,8 +19,8 @@ Spin up a **background agent** to do the reading, so you keep working while it r
 
 Wrong skill when:
 
-- The question is about **our own data** — grain, nulls, cardinality, volume, freshness. Use `/research-data`.
-- The question is **"which approach should we take?"** — model choice, tool comparison, prior art. Use `/research-web`.
+- The question is about **our own data** — grain, nulls, cardinality, volume, freshness. Call the Skill tool with "research-data" instead.
+- The question is **"which approach should we take?"** — model choice, tool comparison, prior art. Call the Skill tool with "research-web" instead.
 
 ## The agent's job
 
