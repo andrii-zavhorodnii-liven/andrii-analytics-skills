@@ -1,5 +1,3 @@
 interface:
   display_name: "SHAP report"
-  short_description: "SHAP side-by-side HTML report for the published roster"
-policy:
-  allow_implicit_invocation: false
+  short_description: "SHAP HTML report for the models published in this repo"

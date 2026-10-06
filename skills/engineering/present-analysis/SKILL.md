@@ -1,7 +1,6 @@
 ---
 name: present-analysis
-description: Turn a finished analysis into a layered Markdown report a stakeholder can actually use — anchored on their question, every takeaway backed by a chart.
-disable-model-invocation: true
+description: Turn a finished analysis into a layered Markdown report a stakeholder can actually use — anchored on their question, every takeaway backed by a chart. Use when an analysis is done and the user wants it written up, turned into a report or readout for a stakeholder, or asks how to present the results. Not for running the analysis itself.
 ---
 
 You turn a finished analysis into a report a stakeholder can actually use.
