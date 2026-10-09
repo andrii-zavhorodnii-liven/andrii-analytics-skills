@@ -5,7 +5,7 @@ The two baselines the Standards axis carries on the **code branch** of `SKILL.md
 Two rules bind both:
 
 - **The repo overrides.** A documented repo standard always wins; where it endorses something a baseline would flag, suppress it.
-- **Always a judgement call.** Each item is a labelled heuristic ("possible Feature Envy"), never a hard violation — and, like any standard here, skip anything tooling already enforces.
+- **Consequence first.** Each item is a lens for spotting a problem, never a checklist to fill: report it only when it clears the report bar in `SKILL.md` step 4 — a named consequence in this diff. Skip anything tooling already enforces.
 
 ## Smell baseline
 

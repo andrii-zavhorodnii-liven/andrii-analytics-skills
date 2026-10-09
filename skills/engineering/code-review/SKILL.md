@@ -50,21 +50,27 @@ Send a single message with two `Agent` tool calls. Use the `general-purpose` sub
 
 - The full diff command and commit list.
 - The list of standards-source files you found in step 3, **plus every baseline step 3 selected**, pasted in full; the sub-agent has no other access to them.
-- The brief: "Report — per file/hunk where relevant — (a) every place the diff violates a documented standard: cite the standard (file + the rule); and (b) any baseline issue you spot: name it and quote the hunk. Distinguish hard violations from judgement calls — documented-standard breaches can be hard, but baseline items are always judgement calls, and a documented repo standard overrides the baseline. Skip anything tooling enforces. Under 400 words."
+- The **report bar** (below), pasted in full.
+- The brief: "Report — per file/hunk where relevant — (a) every place the diff violates a documented standard: cite the standard (file + the rule); and (b) every baseline issue that clears the report bar: name it, quote the hunk, state its consequence. A documented repo standard overrides the baseline. Skip anything tooling enforces. Under 400 words."
 
 **Spec sub-agent prompt** — include:
 
 - The diff command and commit list.
 - The path or fetched contents of the spec.
-- The brief: "Report: (a) requirements the spec asked for that are missing or partial; (b) behaviour in the diff that wasn't asked for (scope creep); (c) requirements that look implemented but where the implementation looks wrong; (d) where the diff defines or changes a metric, analysis query, or stakeholder-facing output, whether it answers the question the spec actually asks — flag a metric that subtly answers a different question (a rate where the spec needs a volume, an average masking a distribution), a likely misread by the output's audience, and survivorship or excluded segments that could change the conclusion. Quote the spec line for each finding; (d) items are judgement calls, tag them as such. Under 400 words."
+- The **report bar** (below), pasted in full.
+- The brief: "Report: (a) requirements the spec asked for that are missing or partial; (b) behaviour in the diff that wasn't asked for (scope creep); (c) requirements that look implemented but where the implementation looks wrong; (d) where the diff defines or changes a metric, analysis query, or stakeholder-facing output, whether it answers the question the spec actually asks — flag a metric that subtly answers a different question (a rate where the spec needs a volume, an average masking a distribution), a likely misread by the output's audience, and survivorship or excluded segments that could change the conclusion. Quote the spec line for each finding. Report only findings that clear the report bar. Under 400 words."
 
 If the spec is missing, skip the Spec sub-agent and note this in the final report.
+
+**Report bar** — both sub-agents apply it to every finding:
+
+> Report a finding only when you can name its **consequence** in this diff — a wrong number, a failing run, a spec requirement unmet, or the concrete next edit it will break — and you are ≥80% sure of it after reading the code around the hunk. Tag each with a severity: 🔴 fails or publishes wrong data · 🟠 likely bug, or a spec requirement unmet · 🟡 real but not urgent. Order by severity; keep at most five 🟡. A clean axis reports "no findings".
 
 ### 5. Aggregate
 
 Present the two reports under `## Standards` and `## Spec` headings, verbatim or lightly cleaned. Do **not** merge or rerank findings — the two axes are deliberately separate (see _Why two axes_).
 
-End with a one-line summary: total findings per axis, and the worst issue _within each axis_ (if any). Don't pick a single winner across axes — that's the reranking the separation exists to prevent.
+End with a one-line summary: findings per axis by severity, and the worst issue _within each axis_ (if any). Don't pick a single winner across axes — that's the reranking the separation exists to prevent.
 
 ## Why two axes
 
