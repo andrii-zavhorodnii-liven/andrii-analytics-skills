@@ -9,7 +9,6 @@ Reachable only when you type them (Claude Code: `disable-model-invocation: true`
 - **[ask-andrii](./ask-andrii/SKILL.md)** — Ask which skill or flow fits your situation. A router over the user-invoked skills in this repo.
 - **[grill-with-docs](./grill-with-docs/SKILL.md)** — Grilling session that also builds your project's domain model, sharpening terminology and updating `CONTEXT.md` and ADRs inline.
 - **[triage](./triage/SKILL.md)** — Move issues through a state machine of triage roles.
-- **[improve-codebase-architecture](./improve-codebase-architecture/SKILL.md)** — Scan a codebase for deepening opportunities, present them as a visual HTML report, then grill through whichever one you pick.
 - **[to-spec](./to-spec/SKILL.md)** — Turn the current conversation into a spec and publish it to the issue tracker.
 - **[to-tickets](./to-tickets/SKILL.md)** — Break any plan, spec, or conversation into a set of tracer-bullet tickets, each declaring its blocking edges — native issue dependencies on GitHub, text in a local file otherwise.
 - **[implement](./implement/SKILL.md)** — Build the work described by a spec or set of tickets, driving `/tdd` at pre-agreed seams and closing out with `/code-review` before committing.
@@ -37,3 +36,4 @@ Model- or user-reachable (rich trigger phrasing so the model can reach for them)
 - **[feasibility-check](./feasibility-check/SKILL.md)** — Pressure-test whether an ask is feasible, and at what cost, before promising an estimate: trace the real system, tag each piece have/build/can't/unknown, one verdict plus the single check to run first.
 - **[present-analysis](./present-analysis/SKILL.md)** — Turn a finished analysis into a layered stakeholder report: takeaways anchored on the stakeholder question, every takeaway backed by a chart.
 - **[shap-report](./shap-report/SKILL.md)** — SHAP HTML report for the CatBoost model(s) published in the current repo — a roster of targets or a single model: mean|SHAP| share % by feature × model, on one hash-verified shared holdout sample. Fires only inside a repo that holds a `.cbm` model.
+- **[improve-codebase-architecture](./improve-codebase-architecture/SKILL.md)** — Scan a codebase for deepening opportunities, present them as a visual HTML report, then grill through whichever one you pick.

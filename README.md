@@ -137,7 +137,6 @@ Daily data, analytics and platform work.
 - **[implement](./skills/engineering/implement/SKILL.md)** — Build the work described by a spec or set of tickets, driving `/tdd` at pre-agreed seams and closing out with `/code-review` before committing.
 - **[implement-spec](./skills/engineering/implement-spec/SKILL.md)** — Build a whole spec's tickets in one run: implementer subagents work the ready frontier of the task graph in parallel, each in its own worktree, merged onto one integration branch and closed out with `/code-review`.
 - **[retro](./skills/engineering/retro/SKILL.md)** — Look back at a coding session and suggest changes to the agent's environment, not the code: navigation pointers, automated checks, coding standards, steering files, data access.
-- **[improve-codebase-architecture](./skills/engineering/improve-codebase-architecture/SKILL.md)** — Scan a codebase for deepening opportunities, present them as a visual HTML report, then grill through whichever one you pick.
 - **[wayfinder](./skills/engineering/wayfinder/SKILL.md)** — Plan a huge chunk of work, more than one agent session can hold, as a shared map of decision tickets on the issue tracker — resolved one at a time until the way to the destination is clear.
 - **[consolidating-work](./skills/engineering/consolidating-work/SKILL.md)** — Pull a sprawl of parallel worktrees and branches back to a reviewable state: secure every uncommitted change first, reap the branches a descendant already contains, then settle each surviving tip as a PR to `main`.
 
@@ -158,6 +157,7 @@ Daily data, analytics and platform work.
 - **[feasibility-check](./skills/engineering/feasibility-check/SKILL.md)** — Pressure-test whether an ask is feasible, and at what cost, before promising an estimate: trace the real system, tag each piece have/build/can't/unknown, and return one verdict with the single check to run first. Verdicts route onward — feasible into the main flow, too-big-for-one-session into `/wayfinder`.
 - **[present-analysis](./skills/engineering/present-analysis/SKILL.md)** — Turn a finished analysis into a layered stakeholder report: takeaways anchored on the stakeholder question, every takeaway backed by a chart, recommendations in plain business language.
 - **[shap-report](./skills/engineering/shap-report/SKILL.md)** — SHAP HTML report for the CatBoost model(s) published in the current repo — a roster of targets or a single model: mean|SHAP| share % by feature × model, on one hash-verified shared holdout sample. Fires only inside a repo that holds a `.cbm` model.
+- **[improve-codebase-architecture](./skills/engineering/improve-codebase-architecture/SKILL.md)** — Scan a codebase for deepening opportunities, present them as a visual HTML report, then grill through whichever one you pick.
 
 ### Productivity
 
