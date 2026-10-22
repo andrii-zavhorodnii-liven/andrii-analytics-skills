@@ -1,0 +1,3 @@
+interface:
+  display_name: "Resolve PR Comments"
+  short_description: "Address and resolve every review comment on a PR"
