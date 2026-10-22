@@ -45,4 +45,4 @@ If the repo's `CLAUDE.md` names after-push checks (CI comments, bot reviews), ru
 
 ## 5. Ping for review
 
-Reply in the thread: one line with the PR link, @-mentioning the user and asking them to review. The user is the person running this session, not necessarily the message's author: find their Slack account by their email (the session's user email, else `git config user.email`), and ask them for their handle if no account matches. Then tell the user in chat the same PR link.
+Reply in the thread: one line with the PR link, @-mentioning the user and asking them to review. The user is the person running this session, not necessarily the message's author: find their Slack account by their email (the session's user email, else `git config user.email`), and mention @Andrii Zavhorodnii if no account matches. Then tell the user in chat the same PR link.
