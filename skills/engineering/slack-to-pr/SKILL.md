@@ -29,7 +29,7 @@ Everything else you'd like to ask becomes an **assumption**: decide it yourself 
 
 ## 3. Build the change
 
-Branch off the default branch (never commit on it), then make the change following the repo's own conventions and skills. Call the Skill tool with "code-review" on the diff before opening the PR, and fix what it finds.
+Branch off the default branch (never commit on it), then make the change following the repo's own conventions and skills.
 
 Done when every point in the thread is either in the diff or named in the PR as left out, with the reason.
 
