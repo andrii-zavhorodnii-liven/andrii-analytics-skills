@@ -43,6 +43,8 @@ A starting situation that generates work, then merges onto the main flow.
 
 - **A stakeholder ask lands and someone wants an estimate** → **`/feasibility-check`**. Before anyone promises anything, it traces the real system the change would plug into, tags each piece ✓ have / ✗ build / ⛔ can't / ⚠ unknown, and returns one verdict with the single check to run first. Its verdict is a route: **feasible** → `/grill-with-docs` and the main flow; **too big or foggy for one session** → `/wayfinder`, seeded by its ⚠ rows; **check first** → `/research-data` or `/research-docs`. It has a light "smell test" mode for small asks — reach for it any time you're about to say "sure, about a week." It's model-invoked, so the agent reaches for it too when an estimate is asked for.
 
+- **A teammate asks for a change in Slack** → **`/slack-to-pr`**. Give it the message link: it reads the thread, digs before asking, asks in the thread (in the thread's language) only what would change the PR, builds the change with `/code-review`, opens the PR with an assumptions list, and pings you for review in the thread. A shortcut through the main flow for asks small enough to skip grilling and tickets.
+
 - **Bugs and requests piling up** → **`/triage`**. It moves issues through triage roles and produces agent-ready issues, which **`/implement`** later picks up.
 
   Triage is only for issues **you didn't create** — bug reports, incoming feature requests, anything that arrives raw. Tickets that `/to-tickets` produced are already agent-ready, so **don't triage them**.
