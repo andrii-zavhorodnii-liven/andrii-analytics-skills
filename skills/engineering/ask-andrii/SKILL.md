@@ -29,6 +29,8 @@ The route most work travels. You have an idea and want it built.
 
    When the work goes up as a pull request, **`/pr`** shapes the body: the smallest visual that shows the change (a Dataform graph diff, a table's grain and columns), before/after evidence that it works (the same bounded query on old and new, assertion runs), and a one-way or two-way door call with its blast radius (downstream models, dashboards). It's model-invoked, so the agent reaches for it whenever it writes a PR.
 
+   Once reviewers answer, **`/resolve-pr-comments`** works the review: it gathers every open comment (review threads, review bodies, bot comments), checks each claim against the data or code before agreeing, fixes or pushes back with evidence, replies on every thread and resolves it. Model-invoked, so the agent reaches for it when a review lands.
+
 4. **`/retro`** closes the loop. After a build, and especially one that went sideways, it looks back over the session and suggests changes to the agent's **environment**, not the code: navigation pointers, automated checks (`ruff`, `dataform compile`, assertions, a pre-commit hook), the coding standards `/code-review` enforces, steering files, data access. Mechanical mistakes become deterministic checks; judgement calls become coding standards. The next build then starts from a better environment.
 
 ### Context hygiene
