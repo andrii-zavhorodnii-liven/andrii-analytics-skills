@@ -139,6 +139,7 @@ Daily data, analytics and platform work.
 - **[retro](./skills/engineering/retro/SKILL.md)** — Look back at a coding session and suggest changes to the agent's environment, not the code: navigation pointers, automated checks, coding standards, steering files, data access.
 - **[wayfinder](./skills/engineering/wayfinder/SKILL.md)** — Plan a huge chunk of work, more than one agent session can hold, as a shared map of decision tickets on the issue tracker — resolved one at a time until the way to the destination is clear.
 - **[consolidating-work](./skills/engineering/consolidating-work/SKILL.md)** — Pull a sprawl of parallel worktrees and branches back to a reviewable state: secure every uncommitted change first, reap the branches a descendant already contains, then settle each surviving tip as a PR to `main`.
+- **[slack-to-pr](./skills/engineering/slack-to-pr/SKILL.md)** — Turn a Slack message into a PR: read the thread, ask there only what digging can't answer (in the linked message's language), build the change, open the PR, ping for review in the thread.
 
 **Model-invoked**
 

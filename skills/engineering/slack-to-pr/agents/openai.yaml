@@ -1,0 +1,5 @@
+interface:
+  display_name: "Slack to PR"
+  short_description: "Build a PR from a Slack thread"
+policy:
+  allow_implicit_invocation: false
