@@ -23,7 +23,12 @@ Ask in the thread only when one of these holds:
 - two reasonable readings of the ask would produce **different PRs**, or
 - a fact the change needs (a threshold, a date, which of two tables) is nowhere in code, data or the thread.
 
-Post all questions as one reply, numbered, each answerable in a line. Then end your turn, telling the user in chat that the questions are in the thread and to tell you once they're answered. On resume, re-read the thread before going on.
+Post all questions as one reply, numbered, each answerable in a line. In chat mode (step 1's fallback), ask in chat and end your turn. In the thread, keep the reply's `ts` and **watch** for answers:
+
+1. Schedule a recurring check with CronCreate (it may be deferred; search the deferred tools for it), cron `*/5 * * * *`. Write its prompt out in full, with the thread link, channel id, thread ts and question ts filled in: read the thread with `oldest` set to the question's `ts`; with no reply newer than the question, end the turn with no output; with one, follow slack-to-pr step 2's **On resume** for that thread, then steps 3–5 (build the change, open the PR, ping for review). If the slack-to-pr skill text is no longer in context, tell the user a reply came in and ask them to re-run `/slack-to-pr <thread link>`.
+2. End your turn, telling the user in chat that the questions are in the thread, that you check it every 5 minutes for up to 7 days while this session stays open, and that they can also tell you directly once it's answered.
+
+**On resume**, from the watch or the user: CronDelete the watch job if it's still in CronList, re-read the whole thread, and go on. Every question still unanswered becomes an assumption.
 
 Everything else you'd like to ask becomes an **assumption**: decide it yourself and carry it to the PR body.
 
