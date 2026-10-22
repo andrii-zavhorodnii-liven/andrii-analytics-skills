@@ -1,6 +1,6 @@
 ---
 name: resolve-pr-comments
-description: Address every review comment on a PR — fix or push back, reply on each thread, resolve it. Use when a PR has review feedback to work through (a reviewer, Claude review, a CI comment), or the user asks to address, answer or resolve PR comments.
+description: Work through every review comment on a PR — verify, fix or decline, reply, resolve. Use when a PR has review feedback to address.
 ---
 
 The PR is the one the user names, else the current branch's (`gh pr view --json number,url,headRefName`). Work on its head branch; if the checkout is on another branch, stop and ask.
@@ -27,7 +27,7 @@ Done when every source is read and each row carries its thread `id` (or comment 
 
 ## 2. Verdict each row
 
-Check the reviewer's claim against the real thing before agreeing — run the query, read the code, compile — in the repo's trust order: live data > code > docs. Reviewers, bots most of all, are sometimes wrong. Then give each row one verdict:
+Check the reviewer's claim against the real thing before agreeing — run the query, read the code, compile. Then give each row one verdict:
 
 - **fix** — the claim holds and the change is in scope.
 - **decline** — the claim is wrong, or the change belongs elsewhere; carry the evidence (the query result, the line of code).
@@ -38,7 +38,7 @@ Done when every row is fix or decline.
 
 ## 3. Fix and push
 
-Make the **fix** rows, following the repo's own conventions and skills. Run the checks the repo names (`dataform compile`, tests, assertions) until they pass, commit — one commit per row, or per group of rows that share a change — and push. Done when every **fix** row maps to a pushed commit.
+Make the **fix** rows, run the repo's checks until they pass, commit and push. Done when every **fix** row maps to a pushed commit.
 
 ## 4. Reply and resolve
 
@@ -53,10 +53,6 @@ gh api graphql -F id=<thread id> -f query='
 
 Rows from review bodies and the PR conversation have no thread: answer them all in one PR comment (`gh pr comment`), one bullet per row, linking the comment's URL.
 
-If the repo's `CLAUDE.md` names after-push checks (a CI comment, a bot review), read them once the push lands; new comments go back to step 1 as a fresh ledger.
+Comments that land after the push (CI, bot review) start a fresh ledger at step 1.
 
 Done when every row has a reply and every thread is resolved.
-
-## 5. Report
-
-Tell the user, per verdict, how many rows and which — with the commit for each fix and the reason for each decline.
