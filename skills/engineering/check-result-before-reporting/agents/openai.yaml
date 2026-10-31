@@ -1,0 +1,3 @@
+interface:
+  display_name: "Check Result Before Reporting"
+  short_description: "Check a measured number is real before reporting it"

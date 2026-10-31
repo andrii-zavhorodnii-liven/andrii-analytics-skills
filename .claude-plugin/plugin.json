@@ -49,6 +49,8 @@
     "./skills/engineering/feasibility-check",
     "./skills/engineering/shap-report",
     "./skills/engineering/retrain-proof",
+    "./skills/engineering/check-result-before-reporting",
+    "./skills/engineering/blast-radius",
     "./skills/productivity/grilling",
     "./skills/productivity/grill-me",
     "./skills/productivity/handoff",
