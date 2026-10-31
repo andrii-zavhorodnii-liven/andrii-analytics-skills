@@ -65,6 +65,8 @@ If the spec is missing, skip the Spec sub-agent and note this in the final repor
 **Report bar** — both sub-agents apply it to every finding:
 
 > Report a finding only when you can name its **consequence** in this diff — a wrong number, a failing run, a spec requirement unmet, or the concrete next edit it will break — and you are ≥80% sure of it after reading the code around the hunk. Tag each with a severity: 🔴 fails or publishes wrong data · 🟠 likely bug, or a spec requirement unmet · 🟡 real but not urgent. Order by severity; keep at most five 🟡. A clean axis reports "no findings".
+>
+> Prove every 🔴 and 🟠 with a run where one can reach it: a bounded query that returns the wrong rows, `dataform compile`, a failing test against the real code; for skill markdown, a grep that shows the missing reference or the two lines that contradict. Quote the command and its output. A 🔴 or 🟠 you could not run is tagged **unproven**, with what would prove it.
 
 ### 5. Aggregate
 

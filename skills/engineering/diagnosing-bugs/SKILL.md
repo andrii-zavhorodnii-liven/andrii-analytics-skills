@@ -95,6 +95,8 @@ Each hypothesis must be **falsifiable**: state the prediction it makes.
 
 If you cannot state the prediction, the hypothesis is a vibe — discard or sharpen it.
 
+**Back here after two failed fixes?** If both rested on one belief ("the duplicates come from the source", "the job reads yesterday's partition"), suspect that **premise**, not the fixes. Write it as one sentence and test it directly with the loop before the next hypothesis — each failed fix is evidence against it.
+
 **Show the ranked list to the user before testing.** They often have domain knowledge that re-ranks instantly ("we just deployed a change to #3"), or know hypotheses they've already ruled out. Cheap checkpoint, big time saver. Don't block on it — proceed with your ranking if the user is AFK.
 
 ## Phase 4 — Instrument
@@ -126,7 +128,7 @@ If a correct seam exists:
 1. Turn the minimised repro into a failing test at that seam.
 2. Watch it fail. If you forced the red by mutating code or a fixture, `diff` against a pristine copy to prove the mutation landed before you trust it.
 3. Apply the fix.
-4. Watch it pass.
+4. Watch it pass. If it stays red, revert the fix and go back to Phase 3.
 5. Re-run the Phase 1 feedback loop against the original (un-minimised) scenario.
 
 ## Phase 6 — Cleanup

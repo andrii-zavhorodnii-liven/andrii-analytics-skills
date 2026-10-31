@@ -63,9 +63,9 @@ Keep this trace as your evidence. Every feasibility claim you make later must po
 
 Decompose the change into concrete pieces of work, and tag each one against the trace. This single table is the whole assessment — the status column carries the meaning, so use exactly these four tags and no others:
 
-- **✓ have it** — the current system gives this for free. Cite the trace.
+- **✓ have it** — the current system gives this for free. Cite the trace: a `file:line`, or a query you ran and its result. A ✓ you can only assert is a ⚠.
 - **✗ build it** — does not exist; must be built, modeled, or sourced. Be specific: "daily headcount" and "daily revenue recognized on the real billing day" are very different sizes of build even though both sound like "daily."
-- **⛔ can't** — not reachable on the current system, data, or plan without something outside the scope of this change (a missing data source, an API plan upgrade, a finance process). A hard wall, not an effort.
+- **⛔ can't** — not reachable on the current system, data, or plan without something outside the scope of this change (a missing data source, an API plan upgrade, a finance process). A hard wall, not an effort. Cite what proves the wall: the API doc, the column that doesn't exist, a query that comes back empty. A ⛔ you can only assert is a ⚠.
 - **⚠ unknown** — you cannot tell from the code whether it is cheap, a build, or a wall. **The ⚠ rows are the checklist** — each one is something to resolve before committing.
 
 Hunt the ⚠ rows adversarially. For each, ask "could this turn a week into a month?" and check it against the trace, not your assumptions. The recurring traps in analytics work:
@@ -162,9 +162,9 @@ grain. If it doesn't, the daily source split is modeled, not measured — resolv
 THE BREAKDOWN
 | Piece of the work              | Status     | Effort | Note                                       |
 |--------------------------------|------------|--------|--------------------------------------------|
-| Daily grain on watch-time      | ✓ have it  | —      | the ingestion job already pulls day grain  |
-| Per-video rows                 | ✓ have it  | —      | video_stats is keyed by video_id           |
-| Dashboard wiring               | ✓ have it  | hrs    | add one dimension to the existing mart     |
+| Daily grain on watch-time      | ✓ have it  | —      | `ingest/youtube.py:42` requests `dimensions=day` |
+| Per-video rows                 | ✓ have it  | —      | ran: `COUNT(*) = COUNT(DISTINCT video_id)` per day on video_stats |
+| Dashboard wiring               | ✓ have it  | hrs    | `definitions/marts/video_daily.sqlx` — add one dimension |
 | trafficSource in the pull      | ✗ build it | days   | new API params + schema column + backfill  |
 | API serves the split at day grain | ⚠ unknown | ?    | the big unknown — check before promising   |
 | Row volume at source×video×day | ⚠ unknown  | ?      | ~8–12× blowup; check partition/cost impact |

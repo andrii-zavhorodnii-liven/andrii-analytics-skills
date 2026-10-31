@@ -39,6 +39,7 @@ Do all of this before you write any of the report.
    - If charts exist but it is ambiguous which to use, ask where to pull them from.
    - If you genuinely cannot find any, use clearly marked placeholders (see the format) and tell the analyst what is missing.
 4. **Surface what you are unsure about.** As you read, note anything borderline you would not silently publish: a finding from a thin sample, a stale or partial number (a month still ingesting, a table mid-backfill), a result that hedges, a chart you are unsure belongs. You will raise these, not bury them.
+   - A takeaway that rests on a lift, a delta, or a model metric needs its interval and the slice that carries it. When the analysis lacks them, put that number on this list and tell the analyst to run `/check-result-before-reporting` on it before the report goes out.
 
 Confirm the question and resolve the source before writing. This gate is not optional.
 
