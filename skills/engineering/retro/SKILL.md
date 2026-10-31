@@ -1,6 +1,6 @@
 ---
 name: retro
-description: "Conduct a retrospective on a coding session."
+description: "Conduct a retrospective on one coding session, or on every session in a date range (today, 7d, YYYY-MM-DD)."
 disable-model-invocation: true
 ---
 
@@ -10,7 +10,7 @@ The user has asked for a **retrospective**. You are suggesting improvements to t
 
 1. Call the Skill tool with "writing-for-agents" for the writing style guide.
 
-2. Read the primary sources for the session the user specifies. This may mean searching through session logs on this machine. If the user doesn't specify a session, default to the current one.
+2. Read the primary sources for the session the user specifies. This may mean searching through session logs on this machine. If the user doesn't specify a session, default to the current one. If the user gives a date range instead (`today`, `7d`, a `YYYY-MM-DD` start date), follow [RANGE.md](RANGE.md) in place of steps 2–3; it ends in step 4.
 
 3. Look for candidates for improvement in these categories.
 
