@@ -6,6 +6,8 @@ disable-model-invocation: true
 
 Implement the work described by the user in the spec or tickets.
 
+If the user passes a ticket reference, fetch it from the issue tracker and state its title before starting. If the reference is ambiguous, ask.
+
 Call the Skill tool with "tdd" where possible, at pre-agreed seams.
 
 Run the fast checks regularly and the slow ones once at the end:
