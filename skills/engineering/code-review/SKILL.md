@@ -10,7 +10,7 @@ Two-axis review of the diff between `HEAD` and a fixed point the user supplies:
 
 The diff can be code or a skill's own markdown; step 3 picks the baseline from what it holds.
 
-Both axes run as **parallel sub-agents** so they don't pollute each other's context, then this skill aggregates their findings.
+Both axes run as **parallel sub-agents** so they don't pollute each other's context, then this skill aggregates their findings. Start every sub-agent with a fresh context window.
 
 Issue tracker convention: **GitHub Issues** via the `gh` CLI when the repo has a git remote; local markdown under `.scratch/<feature>/issues/` when it doesn't.
 
@@ -35,7 +35,7 @@ Look for the originating spec, in this order:
 
 ### 3. Identify the standards sources
 
-Anything in the repo that documents how its contents should be written, such as `CODING_STANDARDS.md`, `CONTRIBUTING.md`, or a `CLAUDE.md` carrying repo conventions.
+Search the repo for every file that documents how its contents should be written, such as a `CLAUDE.md` carrying repo conventions. When `CODING_STANDARDS.md` or `CONTRIBUTING.md` exists, it must be on the list.
 
 On top of whatever the repo documents, the Standards axis carries a **baseline** — the failure modes that apply even when a repo documents nothing. Which baseline applies follows each changed file, so a diff holding both kinds carries both baselines — each file judged against its own:
 
@@ -44,7 +44,7 @@ On top of whatever the repo documents, the Standards axis carries a **baseline**
 
 ### 4. Spawn both sub-agents in parallel
 
-Send a single message with two `Agent` tool calls. Use the `general-purpose` subagent for both.
+Send a single message with two `Agent` tool calls, in the foreground, and aggregate the reports they return. Use the `general-purpose` subagent for both.
 
 **Standards sub-agent prompt** — include:
 
