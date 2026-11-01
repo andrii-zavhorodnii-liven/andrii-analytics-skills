@@ -11,6 +11,7 @@ Reachable only when you type them (Claude Code: `disable-model-invocation: true`
 - **[pr-merged](./pr-merged/SKILL.md)** — After a PR merges, sync the default branch and delete the merged local branches.
 - **[teach](./teach/SKILL.md)** — Teach the user a new skill or concept over multiple sessions, using the current directory as a stateful teaching workspace.
 - **[wait-what](./wait-what/SKILL.md)** — Stop and re-pitch the last message in plain language when it didn't land.
+- **[check-skills-to-adopt](./check-skills-to-adopt/SKILL.md)** — Check someone else's skills for whole skills, parts, or ideas worth adopting: fetch only their folder, sort each skill into new skill / addition / maybe / covered / skip by grepping ours, re-aim the keepers at our stack, and report before building anything.
 
 ## Model-invoked
 
