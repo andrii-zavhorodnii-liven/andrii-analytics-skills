@@ -1,0 +1,5 @@
+interface:
+  display_name: "Check Skills to Adopt"
+  short_description: "Find what's worth adopting from someone else's skills"
+policy:
+  allow_implicit_invocation: false

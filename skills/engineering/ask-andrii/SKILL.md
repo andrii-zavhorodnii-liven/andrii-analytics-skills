@@ -104,6 +104,7 @@ Off the main flow entirely.
 - **`/pr-merged`** — the tidy-up after a PR lands: fetch with prune, return to the default branch and pull the merge, delete every local branch whose remote is gone (worktrees included). It never touches remote branches or uncommitted work. For one merged PR; a pile-up of parallel worktrees is `/consolidating-work`'s job.
 - **`/teach`** — learn a concept over multiple sessions, using the current directory as a stateful workspace.
 - **`/wait-what`** — when the agent's last message didn't land, stop and have it re-pitched: context first, plain language, the project's own terms.
+- **`/check-skills-to-adopt`** — when someone else's skills repo looks interesting: give it the link, and it sorts every skill there into new skill / small addition to one of ours / maybe / already covered / skip, re-aims the keepers at our stack, and asks which to build. Building then goes through `/writing-for-agents`, and `/code-review` checks the result against the list you picked.
 - **`/writing-for-agents`** — reference for writing any document an agent consumes: skills, `AGENTS.md`/`CLAUDE.md`, docs reached by pointers.
 
 ## Conventions underneath
