@@ -1,0 +1,3 @@
+interface:
+  display_name: "Prove Change"
+  short_description: "Prove a data change is right: diff main vs branch in dev, fresh checker"

@@ -36,8 +36,8 @@ Communication to and from subagents should be sparse. Communicate primarily thro
 
 6. If this changes the **frontier** of available tickets, kick off more **implementer subagents** to work on the new tickets. This allows for maximum concurrency.
 
-7. Once all tickets are complete, call the Skill tool with "code-review" on the integration branch. Fix all issues raised by the code review in a single **implementer subagent**.
+7. Once all tickets are complete, call the Skill tool twice on the integration branch: first with "prove-change", then with "code-review". Fix everything either raises in a single **implementer subagent**, and rerun `prove-change` if the fixes touched an output.
 
-8. Close each ticket (`gh issue close <n> --comment "..."`, or `Status: done` in the `.scratch/` file) naming the integration branch and commit, which acceptance criteria are covered, and anything deliberately left out. Don't wait for a PR to merge: committed and verified is done. If a draft PR exists, mark it ready for review. Report the integration branch.
+8. Close each ticket (`gh issue close <n> --comment "..."`, or `Status: done` in the `.scratch/` file), opening with what `prove-change` couldn't prove for that ticket, then naming the integration branch and commit, which acceptance criteria are covered, and anything deliberately left out. Don't wait for a PR to merge: committed and verified is done. If a draft PR exists, mark it ready for review. Report the integration branch.
 
 9. Clean up all **implementer subagent** worktrees.

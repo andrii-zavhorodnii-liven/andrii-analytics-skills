@@ -17,7 +17,7 @@ A quick ballpark the user asked for needs only question 1; say it is a single un
 
 ## The questions
 
-1. **Did it happen?** The work ran on what you think it ran on. The partition filter and date range applied (row counts per side). The join neither fanned out nor dropped rows (counts before and after, key uniqueness). The variant reached users (exposure counts per arm). The model was scored on the holdout, not the training rows. The query read data instead of the cache (`cacheHit` in the job statistics). Nothing failed quietly: count failed Cloud Run job attempts, rows `SAFE_CAST` turned to NULL, rejected or skipped inserts — a run that half-failed still prints a number.
+1. **Did it happen?** The work ran on what you think it ran on. The partition filter and date range applied (row counts per side). The join neither fanned out nor dropped rows (counts before and after, key uniqueness). The variant reached users (exposure counts per arm). The model was scored on the holdout, not the training rows. The query read data instead of the cache (`cacheHit` in the job statistics). Nothing failed quietly: count failed Cloud Run job attempts, rows `SAFE_CAST` turned to NULL, rejected or skipped inserts — a run that half-failed still prints a number. A zero — no rows, no diff, an assertion that passed — counts only once the same query has returned a row you know exists; an empty partition or the wrong dataset also gives zero.
 2. **Is it beyond the noise?** Compare the gap to the noise floor, on the right unit.
    - A/B: a confidence interval on the randomisation unit (user, not event), and a sample-ratio-mismatch check.
    - Retrain: at least 3 seeds, or a bootstrap interval over the holdout, on the same split for both models.

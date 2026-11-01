@@ -11,7 +11,7 @@ uv-managed dependencies and a one-command `deploy.sh`.
 ## Preconditions
 
 Confirm before starting; stop and ask the user to fix any that fail:
-- `gcloud auth login` valid, and `gcloud config get-value project` is the right project.
+- `gcloud auth login` valid, and `gcloud config get-value project` is the right project. Prove it with one real call — `gcloud run services describe SERVICE --region REGION` — since a set config with an expired token only fails later, mid-recovery.
 - `git`, `gh` (authenticated), `uv`, `gsutil`, `unzip` available.
 - You know: the **service name**, **region**, and where the repo should live (GitHub org/account, private/public).
 

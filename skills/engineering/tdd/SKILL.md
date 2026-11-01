@@ -43,6 +43,8 @@ Not a seam: the warehouse client's own behaviour. BigQuery works; testing that i
 ## Rules of the loop
 
 - **Red before green.** Write the failing test first, then only enough code to pass it. Don't anticipate future tests or add speculative features.
+- **Green comes from the code.** When a test disagrees with the code, fix the code; changing an expected value or loosening an assertion is the user's call.
 - **One slice at a time.** One seam, one test, one minimal implementation per cycle.
 - **Refactoring is not part of the loop.** It belongs to the review stage (see the `code-review` skill), not the red → green implementation cycle.
 - **Fixtures stay tiny.** Three rows that cover the case beat three hundred that obscure it. If a fixture is too big to read in the test file, the test has stopped documenting anything.
+- **Two rows per state.** One row per state hides a join that fans out, a filter that keeps only the first match, and an off-by-one count. Give each state the test cares about at least two rows, and add a duplicate key wherever grain matters.
