@@ -51,6 +51,7 @@
     "./skills/engineering/retrain-proof",
     "./skills/engineering/check-result-before-reporting",
     "./skills/engineering/blast-radius",
+    "./skills/engineering/prove-change",
     "./skills/productivity/grilling",
     "./skills/productivity/grill-me",
     "./skills/productivity/handoff",
